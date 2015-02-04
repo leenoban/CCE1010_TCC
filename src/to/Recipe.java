@@ -1,0 +1,407 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package to;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import utils.DBConfig;
+import utils.DBUtil;
+
+/**
+ *
+ * @author AngusLipsey
+ */
+public class Recipe {
+    
+    private int recipe_id;
+    private String recipe_name;
+    private int level;
+    private String material;
+    private String steps;
+    private Region region;
+    private Method method;
+    private Interval interval;
+    
+    // get all list
+    public static ArrayList getRecipeList() {
+        return getRecipeList(null);
+    }
+    
+    // get list of recipes by criteria "keywords"
+    public static ArrayList getRecipeList(String m_keyword) {
+        ArrayList list = new ArrayList();
+        
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+            String sql = "";
+            sql += "SELECT ";
+            sql += "    a.*, ";
+            sql += "    b." + DBConfig.DB_FIELD_REGION_NAME_TW + ", b. " + DBConfig.DB_FIELD_REGION_NAME_CN + ", ";
+            sql += "    c." + DBConfig.DB_FIELD_METHOD_NAME_TW + ", c." + DBConfig.DB_FIELD_METHOD_NAME_CN + ", ";
+            sql += "    d." + DBConfig.DB_FIELD_INTERVAL + ", d." + DBConfig.DB_FIELD_UNIT_TW + ", d." + DBConfig.DB_FIELD_UNIT_CN + " ";
+            sql += "FROM ";
+            sql += "    " + DBConfig.DB_TBL_RECIPE + " a, " + DBConfig.DB_TBL_REGION + " b, " + DBConfig.DB_TBL_METHOD + " c, " + DBConfig.DB_TBL_INTERVAL + " d ";
+            sql += "WHERE 1=1 ";
+            sql += "    AND b." + DBConfig.DB_FIELD_REGION_ID + " = a." + DBConfig.DB_FIELD_REGION_ID;
+            sql += "    AND c." + DBConfig.DB_FIELD_METHOD_ID + " = a." + DBConfig.DB_FIELD_METHOD_ID;
+            sql += "    AND d." + DBConfig.DB_FIELD_INTERVAL_ID + " = a." + DBConfig.DB_FIELD_INTERVAL_ID;
+            
+            if(m_keyword!=null) { // select record by criteria
+                sql += " AND a." + DBConfig.DB_FIELD_RECIPE_NAME + " LIKE '%" + m_keyword + "%'";
+            }
+            sql += ";"; //System.out.println("sql: " + sql);
+            
+            rs = stmt.executeQuery(sql);
+            if(rs != null) {
+                while(rs.next()) {
+                    Recipe recipe = buildRecipe(rs);
+                    list.add(recipe);
+                }
+            }
+            
+            db.closeConnection(stmt, rs, conn);
+                
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    // retrieve recipe from DB by recipe id
+    public static Recipe getRecipe(int m_recipe_id) {
+        Recipe recipe = new Recipe();
+        
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+            String sql = "";
+            sql += "SELECT ";
+            sql += "    a.*, ";
+            sql += "    b." + DBConfig.DB_FIELD_REGION_NAME_TW + ", b. " + DBConfig.DB_FIELD_REGION_NAME_CN + ", ";
+            sql += "    c." + DBConfig.DB_FIELD_METHOD_NAME_TW + ", c." + DBConfig.DB_FIELD_METHOD_NAME_CN + ", ";
+            sql += "    d." + DBConfig.DB_FIELD_INTERVAL + ", d." + DBConfig.DB_FIELD_UNIT_TW + ", d." + DBConfig.DB_FIELD_UNIT_CN + " ";
+            sql += "FROM ";
+            sql += "    " + DBConfig.DB_TBL_RECIPE + " a, " + DBConfig.DB_TBL_REGION + " b, " + DBConfig.DB_TBL_METHOD + " c, " + DBConfig.DB_TBL_INTERVAL + " d ";
+            sql += "WHERE 1=1 ";
+            sql += "    AND b." + DBConfig.DB_FIELD_REGION_ID + " = a." + DBConfig.DB_FIELD_REGION_ID;
+            sql += "    AND c." + DBConfig.DB_FIELD_METHOD_ID + " = a." + DBConfig.DB_FIELD_METHOD_ID;
+            sql += "    AND d." + DBConfig.DB_FIELD_INTERVAL_ID + " = a." + DBConfig.DB_FIELD_INTERVAL_ID;
+            sql += " AND a." + DBConfig.DB_FIELD_RECIPE_ID + " = " + m_recipe_id + ";";
+            //System.out.println("sql: " + sql);
+            
+            rs = stmt.executeQuery(sql);
+            if(rs != null) {
+                rs.next();
+                recipe = buildRecipe(rs);
+            }
+            
+            db.closeConnection(stmt, rs, conn);
+                
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return recipe;
+    }
+    
+    private static Recipe buildRecipe(ResultSet rs) {
+        Recipe recipe = new Recipe();
+        try {
+            recipe.setRecipe_id(rs.getInt(DBConfig.DB_FIELD_RECIPE_ID));
+            recipe.setRecipe_name(rs.getString(DBConfig.DB_FIELD_RECIPE_NAME));
+            recipe.setLevel(rs.getInt(DBConfig.DB_FIELD_RECIPE_LEVEL));
+            recipe.setMaterial(rs.getString(DBConfig.DB_FIELD_RECIPE_MATERIAL));
+            recipe.setSteps(rs.getString(DBConfig.DB_FIELD_RECIPE_STEPS));
+
+            Region region = new Region();
+            region.setRegion_id(rs.getInt(DBConfig.DB_FIELD_REGION_ID));
+            region.setRegion_name_tw(rs.getString(DBConfig.DB_FIELD_REGION_NAME_TW));
+            region.setRegion_name_cn(rs.getString(DBConfig.DB_FIELD_REGION_NAME_CN));
+            recipe.setRegion(region);
+
+            Method method = new Method();
+            method.setMethod_id(rs.getInt(DBConfig.DB_FIELD_METHOD_ID));
+            method.setMethod_name_tw(rs.getString(DBConfig.DB_FIELD_METHOD_NAME_TW));
+            method.setMethod_name_cn(rs.getString(DBConfig.DB_FIELD_METHOD_NAME_CN));
+            recipe.setMethod(method);
+
+            Interval interval = new Interval();
+            interval.setInterval_id(rs.getInt(DBConfig.DB_FIELD_INTERVAL_ID));
+            interval.setUnit_tw(rs.getString(DBConfig.DB_FIELD_UNIT_TW));
+            interval.setUnit_cn(rs.getString(DBConfig.DB_FIELD_UNIT_CN));
+            recipe.setInterval(interval);
+        } catch(SQLException e) {
+            e.printStackTrace();;
+        }
+        return recipe;
+    }
+    
+    // insert recipe to DB
+    public static void insertRecipe(Recipe m_recipe) {
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            String sql = "";
+            sql += "INSERT INTO " + DBConfig.DB_TBL_RECIPE + " ("
+                                                  + DBConfig.DB_FIELD_RECIPE_ID + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_NAME + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_REGION_ID + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_METHOD_ID + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_INTERVAL_ID + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_LEVEL + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_MATERIAL + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_STEPS + ")" +
+            "VALUES " +
+            "(" 
+                    + DBUtil.getNextId(DBConfig.DB_TBL_RECIPE, DBConfig.DB_FIELD_RECIPE_ID) + ", " 
+                    + "'" + m_recipe.getRecipe_name() + "', " 
+                    + m_recipe.getRegion().getRegion_id() + ", "
+                    + m_recipe.getMethod().getMethod_id() + ", "
+                    + m_recipe.getInterval().getInterval_id() + ", "
+                    + m_recipe.getLevel() + ", "
+                    + "'" + m_recipe.getMaterial() + "', "
+                    + "'" + m_recipe.getSteps() + "'" + 
+            "); ";
+            //System.out.println("sql: " + sql);
+            
+            stmt.executeUpdate(sql);
+            conn.commit();
+            db.closeConnection(stmt, null, conn);
+            
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // update recipe
+    public static void updateRecipe(Recipe m_recipe) {
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            String sql = "";
+            sql += "UPDATE " + DBConfig.DB_TBL_RECIPE + " ";
+            sql += "SET ";
+            sql +=      DBConfig.DB_FIELD_RECIPE_NAME + "='" + m_recipe.getRecipe_name() + "', " ;
+            sql +=      DBConfig.DB_FIELD_RECIPE_REGION_ID + "=" + m_recipe.getRegion().getRegion_id() + ", " ;
+            sql +=      DBConfig.DB_FIELD_RECIPE_METHOD_ID + "=" + m_recipe.getMethod().getMethod_id() + ", " ;
+            sql +=      DBConfig.DB_FIELD_RECIPE_INTERVAL_ID + "=" + m_recipe.getInterval().getInterval_id() + ", " ;
+            sql +=      DBConfig.DB_FIELD_RECIPE_LEVEL + "=" + m_recipe.getLevel() + ", " ;
+            sql +=      DBConfig.DB_FIELD_RECIPE_MATERIAL + "='" + m_recipe.getMaterial() + "', " ;
+            sql +=      DBConfig.DB_FIELD_RECIPE_STEPS + "='" + m_recipe.getSteps() + "' " ;
+            sql += "WHERE " + DBConfig.DB_FIELD_RECIPE_ID + "=" + m_recipe.getRecipe_id() + ";";
+            //System.out.println("sql: " + sql);
+            
+            stmt.executeUpdate(sql);
+            conn.commit();
+            db.closeConnection(stmt, null, conn);
+            
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // delete recipe from DB
+    public static void deleteRecipe(int m_recipe_id) {
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            String sql = "";
+            sql += "DELETE FROM " + DBConfig.DB_TBL_RECIPE + " ";
+            sql += "WHERE " + DBConfig.DB_FIELD_RECIPE_ID + "=" + m_recipe_id + ";";
+            //System.out.println("sql: " + sql);
+            
+            stmt.executeUpdate(sql);
+            conn.commit();
+            db.closeConnection(stmt, null, conn);
+            
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return the recipe_id
+     */
+    public int getRecipe_id() {
+        return recipe_id;
+    }
+
+    /**
+     * @param recipe_id the recipe_id to set
+     */
+    public void setRecipe_id(int recipe_id) {
+        this.recipe_id = recipe_id;
+    }
+
+    /**
+     * @return the recipe_name
+     */
+    public String getRecipe_name() {
+        return recipe_name;
+    }
+
+    /**
+     * @param recipe_name the recipe_name to set
+     */
+    public void setRecipe_name(String recipe_name) {
+        this.recipe_name = recipe_name;
+    }
+
+    /**
+     * @return the level
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * @param level the level to set
+     */
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    /**
+     * @return the material
+     */
+    public String getMaterial() {
+        return material;
+    }
+
+    /**
+     * @param material the material to set
+     */
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    /**
+     * @return the steps
+     */
+    public String getSteps() {
+        return steps;
+    }
+
+    /**
+     * @param steps the steps to set
+     */
+    public void setSteps(String steps) {
+        this.steps = steps;
+    }
+
+    /**
+     * @return the region
+     */
+    public Region getRegion() {
+        return region;
+    }
+
+    /**
+     * @param region the region to set
+     */
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    /**
+     * @return the method
+     */
+    public Method getMethod() {
+        return method;
+    }
+
+    /**
+     * @param method the method to set
+     */
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+
+    /**
+     * @return the interval
+     */
+    public Interval getInterval() {
+        return interval;
+    }
+
+    /**
+     * @param interval the interval to set
+     */
+    public void setInterval(Interval interval) {
+        this.interval = interval;
+    }
+    
+    public static void main(String[] args) {
+        
+        // test: ArrayList getRecipeList(String m_criteria)
+        //showRecipeContent((Recipe)(getRecipeList()).get(0));
+        
+        // test: ArrayList getRecipeList(String m_criteria)
+        //showRecipeContent((Recipe)(getRecipeList("BB")).get(0));
+        
+        // test: Recipe getRecipe(int m_recipe_id)
+        //showRecipeContent(getRecipe(3));
+        
+        // test: insertRecipe(Recipe m_recipe)
+        //insertRecipe(getTestingRecipe());
+        
+        // test: updateRecipe(Recipe m_recipe)
+        //updateRecipe(getTestingRecipe());
+        
+        // test: deleteRecipe(int m_recipe_id)
+        //deleteRecipe(5);
+    }
+    
+    // for checking
+    private static void showRecipeContent(Recipe r) {
+        System.out.println(r.getRecipe_id());
+        System.out.println(r.getRecipe_name());
+        System.out.println(r.getRegion().getRegion_id());
+        System.out.println(r.getRegion().getRegion_name_tw());
+        System.out.println(r.getRegion().getRegion_name_cn());
+        System.out.println(r.getLevel());
+        System.out.println(r.getMethod().getMethod_id());
+        System.out.println(r.getMethod().getMethod_name_tw());
+        System.out.println(r.getMethod().getMethod_name_cn());
+        System.out.println(r.getInterval().getInterval_id());
+        System.out.println(r.getInterval().getInterval());
+        System.out.println(r.getInterval().getUnit_tw());
+        System.out.println(r.getInterval().getUnit_cn());
+        System.out.println(r.getMaterial());
+        System.out.println(r.getSteps());
+    }
+    
+    // for testing
+    private static Recipe getTestingRecipe() {
+        Recipe recipe = new Recipe();
+        recipe.setRecipe_id(4);
+        recipe.setRecipe_name("xxx");
+        Region region = new Region();
+        region.setRegion_id(1);
+        recipe.setRegion(region);
+        Method method = new Method();
+        method.setMethod_id(1);
+        recipe.setMethod(method);
+        Interval interval = new Interval();
+        interval.setInterval_id(1);
+        recipe.setInterval(interval);
+        recipe.setLevel(1);
+        recipe.setMaterial("xxx");
+        recipe.setSteps("xxx");
+        return recipe;
+    }
+    
+}
