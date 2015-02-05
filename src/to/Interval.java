@@ -187,8 +187,8 @@ public class Interval {
     
     public static void main(String args[]) {
         // test: getIntevalList()
-        //System.out.println("getIntevalList().size(): " + getIntevalList().size());
-        //showIntervalContent((Interval)getIntervalList().get(2));
+        System.out.println("getIntevalList().size(): " + getIntervalList().size());
+        showIntervalContent((Interval)getIntervalList().get(2));
         
         // test: insertInterval(Interval m_interval)
         //insertInterval(getTestingInterval());
@@ -197,7 +197,7 @@ public class Interval {
         //updateInterval(getTestingInterval());
         
         // test: deleteInterval(int m_interval)
-        //deleteInterval(7);
+        //deleteInterval(8);
     }
     
     // for checking
@@ -213,8 +213,8 @@ public class Interval {
         Interval interval = new Interval();
         interval.setInterval_id(7);
         interval.setInterval(60);
-        interval.setUnit_tw("yyy");
-        interval.setUnit_cn("yyy");
+        interval.setUnit_tw("aaa");
+        interval.setUnit_cn("aaa");
         return interval;
     }
 }
