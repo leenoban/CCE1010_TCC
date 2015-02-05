@@ -191,9 +191,9 @@ class Method {
     // for testing
     private static Method getTestingMethod() {
         Method method = new Method();
-        method.setMethod_id(10);
-        method.setMethod_name_tw("yyy");
-        method.setMethod_name_cn("yyy");
+        method.setMethod_id(3);
+        method.setMethod_name_tw("ROY");
+        method.setMethod_name_cn("JOE");
         return method;
     }
     
