@@ -185,15 +185,15 @@ public class Region {
     private static void showRegionContent(Region r) {
         System.out.println(r.getRegion_id());
         System.out.println(r.getRegion_name_tw());
-        System.out.println(r.getRegion_name_tw());
+        System.out.println(r.getRegion_name_cn());
     }
     
     // for testing
     private static Region getTestingRegion() {
         Region region = new Region();
-        region.setRegion_id(5);
-        region.setRegion_name_tw("xxx");
-        region.setRegion_name_cn("xxx");
+        region.setRegion_id(6);
+        region.setRegion_name_tw("12312346aaaasdasd");
+        region.setRegion_name_cn("12346123aaa");
         return region;
     }
 }
