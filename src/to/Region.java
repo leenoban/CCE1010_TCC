@@ -192,8 +192,8 @@ public class Region {
     private static Region getTestingRegion() {
         Region region = new Region();
         region.setRegion_id(6);
-        region.setRegion_name_tw("12312346aaaasdasd");
-        region.setRegion_name_cn("12346123aaa");
+        region.setRegion_name_tw("asdasd");
+        region.setRegion_name_cn("asdasd");
         return region;
     }
 }
