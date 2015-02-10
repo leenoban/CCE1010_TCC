@@ -5,8 +5,6 @@
  */
 package utils;
 
-import tcc.Constants;
-
 /**
  *
  * @author AngusLipsey
@@ -18,31 +16,25 @@ public class DBConfig {
     public static final String DB_TBL_RECIPE                = "RECIPE";
     public static final String DB_FIELD_RECIPE_ID           = "RECIPE_ID";
     public static final String DB_FIELD_RECIPE_NAME         = "RECIPE_NAME";
-    public static final String DB_FIELD_RECIPE_REGION_ID    = "REGION_ID";
+    public static final String DB_FIELD_RECIPE_COUNTRY_ID   = "COUNTRY_ID";
     public static final String DB_FIELD_RECIPE_METHOD_ID    = "METHOD_ID";
     public static final String DB_FIELD_RECIPE_INTERVAL_ID  = "INTERVAL_ID";
     public static final String DB_FIELD_RECIPE_LEVEL        = "LEVEL_ID";
     public static final String DB_FIELD_RECIPE_MATERIAL     = "MATERIAL";
     public static final String DB_FIELD_RECIPE_STEPS        = "STEPS";
     
-    public static final String DB_TBL_REGION                = "REGION";
-    public static final String DB_FIELD_REGION_ID           = "REGION_ID";
-    public static final String DB_FIELD_REGION_NAME_TW      = "REGION_NAME_TW";
-    public static final String DB_FIELD_REGION_NAME_CN      = "REGION_NAME_CN";
+    public static final String DB_TBL_COUNTRY               = "COUNTRY";
+    public static final String DB_FIELD_COUNTRY_ID          = "COUNTRY_ID";
+    public static final String DB_FIELD_COUNTRY_NAME        = "COUNTRY_NAME";
     
     public static final String DB_TBL_METHOD                = "METHOD";
     public static final String DB_FIELD_METHOD_ID           = "METHOD_ID";
-    public static final String DB_FIELD_METHOD_NAME_TW      = "METHOD_NAME_TW";
-    public static final String DB_FIELD_METHOD_NAME_CN      = "METHOD_NAME_CN";
+    public static final String DB_FIELD_METHOD_NAME         = "METHOD_NAME";
     
     public static final String DB_TBL_INTERVAL              = "INTERVAL";
     public static final String DB_FIELD_INTERVAL_ID         = "INTERVAL_ID";
     public static final String DB_FIELD_INTERVAL            = "INTERVAL";
-    public static final String DB_FIELD_UNIT_TW             = "UNIT_TW";
-    public static final String DB_FIELD_UNIT_CN             = "UNIT_CN";
-    
-    public static final String DB_TBL_SYSPARAM              = "SYSPARAM ";
-    public static final String DB_FIELD_DEFAULT_LANG        = "DEFAULT_LANG";
+    public static final String DB_FIELD_UNIT                = "UNIT";
     
     /* 
     ============================================================================
@@ -50,46 +42,37 @@ public class DBConfig {
     ============================================================================
     */
     public static final String SQL_CREATE_TBL_RECIPE = 
-            "CREATE TABLE " + DB_TBL_RECIPE + "(" +
+            "CREATE TABLE " + DB_TBL_RECIPE + "("  +
             "      " + DB_FIELD_RECIPE_ID          + " INT PRIMARY KEY NOT NULL, " +
             "      " + DB_FIELD_RECIPE_NAME        + " TEXT            NOT NULL, " +
-            "      " + DB_FIELD_RECIPE_REGION_ID   + " INT             NOT NULL, " +
+            "      " + DB_FIELD_RECIPE_COUNTRY_ID  + " INT             NOT NULL, " +
             "      " + DB_FIELD_RECIPE_METHOD_ID   + " INT             NOT NULL, " +
             "      " + DB_FIELD_RECIPE_INTERVAL_ID + " INT             NOT NULL, " +
-            "      " + DB_FIELD_RECIPE_LEVEL        + " INT                     , " +
+            "      " + DB_FIELD_RECIPE_LEVEL       + " INT                     , " +
             "      " + DB_FIELD_RECIPE_MATERIAL    + " TEXT                    , " +
             "      " + DB_FIELD_RECIPE_STEPS       + " TEXT                      " +
             ");"
             ;
     
-    public static final String SQL_CREATE_TBL_REGION = 
-            "CREATE TABLE " + DB_TBL_REGION + " (" +
-            "      " + DB_FIELD_REGION_ID      + " INT PRIMARY KEY NOT NULL, " +
-            "      " + DB_FIELD_REGION_NAME_TW + " TEXT            NOT NULL, " +
-            "      " + DB_FIELD_REGION_NAME_CN + " TEXT            NOT NULL  " +
+    public static final String SQL_CREATE_TBL_COUNTRY = 
+            "CREATE TABLE " + DB_TBL_COUNTRY + " (" +
+            "      " + DB_FIELD_COUNTRY_ID          + " INT PRIMARY KEY NOT NULL, " +
+            "      " + DB_FIELD_COUNTRY_NAME        + " TEXT            NOT NULL " +
             ");"
             ;
     
     public static final String SQL_CREATE_TBL_METHOD = 
             "CREATE TABLE " + DB_TBL_METHOD + " (" +
-            "      " + DB_FIELD_METHOD_ID      + " INT PRIMARY KEY NOT NULL, " +
-            "      " + DB_FIELD_METHOD_NAME_TW + " TEXT            NOT NULL, " +
-            "      " + DB_FIELD_METHOD_NAME_CN + " TEXT            NOT NULL  " +
+            "      " + DB_FIELD_METHOD_ID          + " INT PRIMARY KEY NOT NULL, " +
+            "      " + DB_FIELD_METHOD_NAME        + " TEXT            NOT NULL  " +
             ");"
             ;
     
     public static final String SQL_CREATE_TBL_INTERVAL = 
             "CREATE TABLE " + DB_TBL_INTERVAL + " (" +
-            "      " + DB_FIELD_INTERVAL_ID + " INT PRIMARY KEY NOT NULL, " +
-            "      " + DB_FIELD_INTERVAL    + " INT             NOT NULL, " +
-            "      " + DB_FIELD_UNIT_TW     + " TEXT            NOT NULL, " +
-            "      " + DB_FIELD_UNIT_CN     + " TEXT            NOT NULL  " +
-            ");"
-            ;
-    
-    public static final String SQL_CREATE_TBL_SYSPARAM = 
-            "CREATE TABLE " +DB_TBL_SYSPARAM + " (" +
-            "      " + DB_FIELD_DEFAULT_LANG + " INT NOT NULL  " +
+            "      " + DB_FIELD_INTERVAL_ID          + " INT PRIMARY KEY NOT NULL, " +
+            "      " + DB_FIELD_INTERVAL             + " INT             NOT NULL, " +
+            "      " + DB_FIELD_UNIT                 + " TEXT            NOT NULL  " +
             ");"
             ;
     
@@ -98,56 +81,45 @@ public class DBConfig {
      Init Data
     ============================================================================
     */
-    public static final String SQL_INSERT_REGION =
-            "INSERT INTO " + DB_TBL_REGION + " (" + DB_FIELD_REGION_ID + ", " 
-                                                  + DB_FIELD_REGION_NAME_TW + ", " 
-                                                  + DB_FIELD_REGION_NAME_CN + ")" +
+    public static final String SQL_INSERT_COUNTRY =
+            "INSERT INTO " + DB_TBL_COUNTRY + " (" + DB_FIELD_COUNTRY_ID + ", "
+                                                  + DB_FIELD_COUNTRY_NAME + ")" +
             "VALUES " +
-            "(1, '上海', '上海'), " +
-            "(2, '北京', '北京'), " +
-            "(3, '四川', '四川'), " +
-            "(4, '廣東', '广东'); "
+            "(1, 'China'), " +
+            "(2, 'England'), " +
+            "(3, 'Italy'), " +
+            "(4, 'France'); "
             ;
     
     public static final String SQL_INSERT_METHOD =
             "INSERT INTO " + DB_TBL_METHOD + " (" + DB_FIELD_METHOD_ID + ", " 
-                                                  + DB_FIELD_METHOD_NAME_TW + ", " 
-                                                  + DB_FIELD_METHOD_NAME_CN + ")" +
+                                                  + DB_FIELD_METHOD_NAME + ")" +
             "VALUES " +
-            "(1, '煎', '煎'), " +
-            "(2, '炒', '炒'), " +
-            "(3, '炆', '炆'), " +
-            "(4, '炖', '炖'), " +
-            "(5, '煮', '煮'), " +
-            "(6, '炸', '炸'), " +
-            "(7, '焗', '焗'), " +
-            "(8, '灼', '灼'), " +
-            "(9, '蒸', '蒸'); "
+            "(1, 'Fired'), " +
+            "(2, 'Steamed'), " +
+            "(3, 'Stew'), " +
+            "(4, 'Slow-Cooked'), " +
+            "(5, 'Water-Boiled'); "
             ;
     
     public static final String SQL_INSERT_INTERVAL =
             "INSERT INTO " + DB_TBL_INTERVAL + " (" + DB_FIELD_INTERVAL_ID + ", " 
-                                                    + DB_FIELD_INTERVAL + ", " 
-                                                    + DB_FIELD_UNIT_TW + ", " 
-                                                    + DB_FIELD_UNIT_CN + ")" +
+                                                    + DB_FIELD_INTERVAL + ", "
+                                                    + DB_FIELD_UNIT + ")" +
             "VALUES " +
-            "(1, 5, '分鐘', '分钟'), " +
-            "(2, 10, '分鐘', '分钟'), " +
-            "(3, 15, '分鐘', '分钟'), " +
-            "(4, 30, '分鐘', '分钟'), " +
-            "(5, 45, '分鐘', '分钟'), " +
-            "(6, 1, '小時', '小时'); "
+            "(1, 5, 'Min(s)'), " +
+            "(2, 10, 'Min(s)'), " +
+            "(3, 15, 'Min(s)'), " +
+            "(4, 30, 'Min(s)'), " +
+            "(5, 45, 'Min(s)'), " +
+            "(6, 1, 'Hr(s)'); "
             ;
-    
-    public static final String SQL_INSERT_SYSPARAM =
-            "INSERT INTO " + DB_TBL_SYSPARAM + " (" + DB_FIELD_DEFAULT_LANG + ")" +
-            "VALUES ('" + Constants.LANG_TW + "'); "
             ;
     
     public static final String SQL_INSERT_RECIPE =
             "INSERT INTO " + DB_TBL_RECIPE + " (" + DB_FIELD_RECIPE_ID + ", " 
                                                   + DB_FIELD_RECIPE_NAME + ", " 
-                                                  + DB_FIELD_RECIPE_REGION_ID + ", " 
+                                                  + DB_FIELD_RECIPE_COUNTRY_ID + ", " 
                                                   + DB_FIELD_RECIPE_METHOD_ID + ", " 
                                                   + DB_FIELD_RECIPE_INTERVAL_ID + ", " 
                                                   + DB_FIELD_RECIPE_LEVEL + ", " 

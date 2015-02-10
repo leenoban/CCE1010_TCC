@@ -11,8 +11,10 @@ package tcc;
  */
 public class Constants {
     
-    // General
-    public static final String LANG_TW = "TW";
-    public static final String LANG_CN = "CN";
+    // General Constants
+    public static final String MODE_CREATE = "create";
+    public static final String MODE_MODIFY = "modify";
     
+    // Recipe Constants
+    public static final int[] LEVEL = {1,2,3,4,5};
 }

@@ -21,8 +21,7 @@ public class Interval {
     
     private int interval_id;
     private int interval;
-    private String unit_tw;
-    private String unit_cn;
+    private String unit;
     
     // get interval list from DB
     public static ArrayList getIntervalList() {
@@ -41,8 +40,7 @@ public class Interval {
                     Interval interval = new Interval();
                     interval.setInterval_id(rs.getInt(DBConfig.DB_FIELD_INTERVAL_ID));
                     interval.setInterval(rs.getInt(DBConfig.DB_FIELD_INTERVAL));
-                    interval.setUnit_tw(rs.getString(DBConfig.DB_FIELD_UNIT_TW));
-                    interval.setUnit_cn(rs.getString(DBConfig.DB_FIELD_UNIT_CN));
+                    interval.setUnit(rs.getString(DBConfig.DB_FIELD_UNIT));
                     list.add(interval);
                 }
             }
@@ -55,6 +53,46 @@ public class Interval {
         return list;
     }
     
+    // retrieve interval from DB by interval id
+    private static Interval getInterval(int m_interval_id) {
+        Interval interval = new Interval();
+        
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+            String sql = "";
+            sql += "SELECT * FROM " + DBConfig.DB_TBL_INTERVAL + " WHERE " + DBConfig.DB_FIELD_INTERVAL_ID + "=" + m_interval_id + ";";
+            //System.out.println("sql: " + sql);
+            
+            rs = stmt.executeQuery(sql);
+            if(rs != null) {
+                rs.next();
+                interval = buildInterval(rs);
+            }
+            
+            db.closeConnection(stmt, rs, conn);
+                
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return interval;
+    }
+    
+    private static Interval buildInterval(ResultSet rs) {
+        Interval interval = new Interval();
+        
+        try {
+            interval.setInterval_id(rs.getInt(DBConfig.DB_FIELD_INTERVAL_ID));
+            interval.setInterval(rs.getInt(DBConfig.DB_FIELD_INTERVAL));
+            interval.setUnit(rs.getString(DBConfig.DB_FIELD_UNIT));
+        } catch(SQLException e) {
+            e.printStackTrace();;
+        }
+        return interval;
+    }
+    
     // insert interval to DB
     public static void insertInterval(Interval m_interval) {
         try {
@@ -65,14 +103,12 @@ public class Interval {
             sql += "INSERT INTO " + DBConfig.DB_TBL_INTERVAL + " ("
                                                   + DBConfig.DB_FIELD_INTERVAL_ID + ", " 
                                                   + DBConfig.DB_FIELD_INTERVAL + ", "
-                                                  + DBConfig.DB_FIELD_UNIT_TW + ", " 
-                                                  + DBConfig.DB_FIELD_UNIT_CN + ")" +
+                                                  + DBConfig.DB_FIELD_UNIT + ")" +
             "VALUES " +
             "(" 
                     + DBUtil.getNextId(DBConfig.DB_TBL_INTERVAL, DBConfig.DB_FIELD_INTERVAL_ID) + ", " 
-                    + "'" + m_interval.getInterval() + "', " 
-                    + "'" + m_interval.getUnit_tw()+ "', " 
-                    + "'" + m_interval.getUnit_cn()+ "'" + 
+                    + "'" + m_interval.getInterval() + "', "
+                    + "'" + m_interval.getUnit()+ "'" + 
             "); ";
             //System.out.println("sql: " + sql);
             
@@ -86,7 +122,7 @@ public class Interval {
     }
     
     // update interval
-    private static void updateInterval(Interval m_interval) {
+    public static void updateInterval(Interval m_interval) {
         try {
             DBUtil db = new DBUtil();
             Connection conn = db.getConnection();
@@ -95,8 +131,7 @@ public class Interval {
             sql += "UPDATE " + DBConfig.DB_TBL_INTERVAL + " ";
             sql += "SET ";
             sql +=      DBConfig.DB_FIELD_INTERVAL + "=" + m_interval.getInterval() + ", " ;
-            sql +=      DBConfig.DB_FIELD_UNIT_TW + "='" + m_interval.getUnit_tw() + "', " ;
-            sql +=      DBConfig.DB_FIELD_UNIT_CN + "='" + m_interval.getUnit_cn() + "' " ;
+            sql +=      DBConfig.DB_FIELD_UNIT + "='" + m_interval.getUnit() + "' " ;
             sql += "WHERE " + DBConfig.DB_FIELD_INTERVAL_ID + "=" + m_interval.getInterval_id() + ";";
             //System.out.println("sql: " + sql);
             
@@ -158,37 +193,26 @@ public class Interval {
     }
 
     /**
-     * @return the unit_tw
+     * @return the unit
      */
-    public String getUnit_tw() {
-        return unit_tw;
+    public String getUnit() {
+        return unit;
     }
 
     /**
-     * @param unit_tw the unit_tw to set
+     * @param unit the unit to set
      */
-    public void setUnit_tw(String unit_tw) {
-        this.unit_tw = unit_tw;
-    }
-
-    /**
-     * @return the unit_cn
-     */
-    public String getUnit_cn() {
-        return unit_cn;
-    }
-
-    /**
-     * @param unit_cn the unit_cn to set
-     */
-    public void setUnit_cn(String unit_cn) {
-        this.unit_cn = unit_cn;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
     
     public static void main(String args[]) {
         // test: getIntevalList()
-        System.out.println("getIntevalList().size(): " + getIntervalList().size());
-        showIntervalContent((Interval)getIntervalList().get(2));
+        //System.out.println("getIntevalList().size(): " + getIntervalList().size());
+        //showIntervalContent((Interval)getIntervalList().get(2));
+        
+        // test: getInterval(int m_interval_id)
+        //showIntervalContent(getInterval(6));
         
         // test: insertInterval(Interval m_interval)
         //insertInterval(getTestingInterval());
@@ -197,15 +221,14 @@ public class Interval {
         //updateInterval(getTestingInterval());
         
         // test: deleteInterval(int m_interval)
-        //deleteInterval(8);
+        //deleteInterval(7);
     }
     
     // for checking
     private static void showIntervalContent(Interval i) {
         System.out.println(i.getInterval_id());
         System.out.println(i.getInterval());
-        System.out.println(i.getUnit_tw());
-        System.out.println(i.getUnit_cn());
+        System.out.println(i.getUnit());
     }
     
     // for testing
@@ -213,8 +236,7 @@ public class Interval {
         Interval interval = new Interval();
         interval.setInterval_id(7);
         interval.setInterval(60);
-        interval.setUnit_tw("aaa");
-        interval.setUnit_cn("aaa");
+        interval.setUnit("bbb");
         return interval;
     }
 }

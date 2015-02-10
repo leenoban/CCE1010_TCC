@@ -17,11 +17,10 @@ import utils.DBUtil;
  *
  * @author AngusLipsey
  */
-class Method {
+public class Method {
     
     private int method_id;
-    private String method_name_tw;
-    private String method_name_cn;
+    private String method_name;
     
     // get method list from DB
     public static ArrayList getMethodList() {
@@ -39,8 +38,7 @@ class Method {
                 while(rs.next()) {
                     Method method = new Method();
                     method.setMethod_id(rs.getInt(DBConfig.DB_FIELD_METHOD_ID));
-                    method.setMethod_name_tw(rs.getString(DBConfig.DB_FIELD_METHOD_NAME_TW));
-                    method.setMethod_name_cn(rs.getString(DBConfig.DB_FIELD_METHOD_NAME_TW));
+                    method.setMethod_name(rs.getString(DBConfig.DB_FIELD_METHOD_NAME));
                     list.add(method);
                 }
             }
@@ -53,6 +51,45 @@ class Method {
         return list;
     }
     
+    // retrieve method from DB by method id
+    private static Method getMethod(int m_method_id) {
+        Method method = new Method();
+        
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+            String sql = "";
+            sql += "SELECT * FROM " + DBConfig.DB_TBL_METHOD + " WHERE " + DBConfig.DB_FIELD_METHOD_ID + "=" + m_method_id + ";";
+            //System.out.println("sql: " + sql);
+            
+            rs = stmt.executeQuery(sql);
+            if(rs != null) {
+                rs.next();
+                method = buildMethod(rs);
+            }
+            
+            db.closeConnection(stmt, rs, conn);
+                
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return method;
+    }
+    
+    private static Method buildMethod(ResultSet rs) {
+        Method method = new Method();
+        
+        try {
+            method.setMethod_id(rs.getInt(DBConfig.DB_FIELD_METHOD_ID));
+            method.setMethod_name(rs.getString(DBConfig.DB_FIELD_METHOD_NAME));
+        } catch(SQLException e) {
+            e.printStackTrace();;
+        }
+        return method;
+    }
+    
     // insert method to DB
     public static void insertMethod(Method m_method) {
         try {
@@ -61,14 +98,12 @@ class Method {
             Statement stmt = conn.createStatement();
             String sql = "";
             sql += "INSERT INTO " + DBConfig.DB_TBL_METHOD + " ("
-                                                  + DBConfig.DB_FIELD_METHOD_ID + ", " 
-                                                  + DBConfig.DB_FIELD_METHOD_NAME_TW + ", " 
-                                                  + DBConfig.DB_FIELD_METHOD_NAME_CN + ")" +
+                                                  + DBConfig.DB_FIELD_METHOD_ID + ", "
+                                                  + DBConfig.DB_FIELD_METHOD_NAME + ")" +
             "VALUES " +
             "(" 
-                    + DBUtil.getNextId(DBConfig.DB_TBL_METHOD, DBConfig.DB_FIELD_METHOD_ID) + ", " 
-                    + "'" + m_method.getMethod_name_tw() + "', " 
-                    + "'" + m_method.getMethod_name_cn() + "'" + 
+                    + DBUtil.getNextId(DBConfig.DB_TBL_METHOD, DBConfig.DB_FIELD_METHOD_ID) + ", "
+                    + "'" + m_method.getMethod_name() + "'" + 
             "); ";
             //System.out.println("sql: " + sql);
             
@@ -82,7 +117,7 @@ class Method {
     }
     
     // update method
-    private static void updateMethod(Method m_method) {
+    public static void updateMethod(Method m_method) {
         try {
             DBUtil db = new DBUtil();
             Connection conn = db.getConnection();
@@ -90,8 +125,7 @@ class Method {
             String sql = "";
             sql += "UPDATE " + DBConfig.DB_TBL_METHOD + " ";
             sql += "SET ";
-            sql +=      DBConfig.DB_FIELD_METHOD_NAME_TW + "='" + m_method.getMethod_name_tw() + "', " ;
-            sql +=      DBConfig.DB_FIELD_METHOD_NAME_CN + "='" + m_method.getMethod_name_cn() + "' " ;
+            sql +=      DBConfig.DB_FIELD_METHOD_NAME + "='" + m_method.getMethod_name() + "' " ;
             sql += "WHERE " + DBConfig.DB_FIELD_METHOD_ID + "=" + m_method.getMethod_id() + ";";
             //System.out.println("sql: " + sql);
             
@@ -139,37 +173,26 @@ class Method {
     }
 
     /**
-     * @return the method_name_tw
+     * @return the method_name
      */
-    public String getMethod_name_tw() {
-        return method_name_tw;
+    public String getMethod_name() {
+        return method_name;
     }
 
     /**
-     * @param method_name_tw the method_name_tw to set
+     * @param method_name the method_name to set
      */
-    public void setMethod_name_tw(String method_name_tw) {
-        this.method_name_tw = method_name_tw;
-    }
-
-    /**
-     * @return the method_name_cn
-     */
-    public String getMethod_name_cn() {
-        return method_name_cn;
-    }
-
-    /**
-     * @param method_name_cn the method_name_cn to set
-     */
-    public void setMethod_name_cn(String method_name_cn) {
-        this.method_name_cn = method_name_cn;
+    public void setMethod_name(String method_name) {
+        this.method_name = method_name;
     }
     
     public static void main(String args[]) {
         // test: getMethodList()
         //System.out.println("getMethodList().size(): " + getMethodList().size());
         //showMethodContent((Method)getMethodList().get(3));
+        
+        //test: getMethod(int m_method_id)
+        //showMethodContent(getMethod(4));
         
         // test: insertMethod(Method m_method)
         //insertMethod(getTestingMethod());
@@ -178,22 +201,20 @@ class Method {
         //updateMethod(getTestingMethod());
         
         // test: deleteMethod(int m_method_id)
-        //deleteMethod(10);
+        //deleteMethod(6);
     }
     
     // for checking
     private static void showMethodContent(Method m) {
         System.out.println(m.getMethod_id());
-        System.out.println(m.getMethod_name_tw());
-        System.out.println(m.getMethod_name_tw());
+        System.out.println(m.getMethod_name());
     }
     
     // for testing
     private static Method getTestingMethod() {
         Method method = new Method();
-        method.setMethod_id(3);
-        method.setMethod_name_tw("Benny_2240");
-        method.setMethod_name_cn("Benny_2240");
+        method.setMethod_id(6);
+        method.setMethod_name("xxx");
         return method;
     }
     

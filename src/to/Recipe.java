@@ -24,7 +24,7 @@ public class Recipe {
     private int level;
     private String material;
     private String steps;
-    private Region region;
+    private Country country;
     private Method method;
     private Interval interval;
     
@@ -45,13 +45,13 @@ public class Recipe {
             String sql = "";
             sql += "SELECT ";
             sql += "    a.*, ";
-            sql += "    b." + DBConfig.DB_FIELD_REGION_NAME_TW + ", b. " + DBConfig.DB_FIELD_REGION_NAME_CN + ", ";
-            sql += "    c." + DBConfig.DB_FIELD_METHOD_NAME_TW + ", c." + DBConfig.DB_FIELD_METHOD_NAME_CN + ", ";
-            sql += "    d." + DBConfig.DB_FIELD_INTERVAL + ", d." + DBConfig.DB_FIELD_UNIT_TW + ", d." + DBConfig.DB_FIELD_UNIT_CN + " ";
+            sql += "    b." + DBConfig.DB_FIELD_COUNTRY_NAME + ", ";
+            sql += "    c." + DBConfig.DB_FIELD_METHOD_NAME + ", ";
+            sql += "    d." + DBConfig.DB_FIELD_INTERVAL + ", d." + DBConfig.DB_FIELD_UNIT + " ";
             sql += "FROM ";
-            sql += "    " + DBConfig.DB_TBL_RECIPE + " a, " + DBConfig.DB_TBL_REGION + " b, " + DBConfig.DB_TBL_METHOD + " c, " + DBConfig.DB_TBL_INTERVAL + " d ";
+            sql += "    " + DBConfig.DB_TBL_RECIPE + " a, " + DBConfig.DB_TBL_COUNTRY + " b, " + DBConfig.DB_TBL_METHOD + " c, " + DBConfig.DB_TBL_INTERVAL + " d ";
             sql += "WHERE 1=1 ";
-            sql += "    AND b." + DBConfig.DB_FIELD_REGION_ID + " = a." + DBConfig.DB_FIELD_REGION_ID;
+            sql += "    AND b." + DBConfig.DB_FIELD_COUNTRY_ID + " = a." + DBConfig.DB_FIELD_COUNTRY_ID;
             sql += "    AND c." + DBConfig.DB_FIELD_METHOD_ID + " = a." + DBConfig.DB_FIELD_METHOD_ID;
             sql += "    AND d." + DBConfig.DB_FIELD_INTERVAL_ID + " = a." + DBConfig.DB_FIELD_INTERVAL_ID;
             
@@ -88,13 +88,13 @@ public class Recipe {
             String sql = "";
             sql += "SELECT ";
             sql += "    a.*, ";
-            sql += "    b." + DBConfig.DB_FIELD_REGION_NAME_TW + ", b. " + DBConfig.DB_FIELD_REGION_NAME_CN + ", ";
-            sql += "    c." + DBConfig.DB_FIELD_METHOD_NAME_TW + ", c." + DBConfig.DB_FIELD_METHOD_NAME_CN + ", ";
-            sql += "    d." + DBConfig.DB_FIELD_INTERVAL + ", d." + DBConfig.DB_FIELD_UNIT_TW + ", d." + DBConfig.DB_FIELD_UNIT_CN + " ";
+            sql += "    b." + DBConfig.DB_FIELD_COUNTRY_NAME + ", ";
+            sql += "    c." + DBConfig.DB_FIELD_METHOD_NAME + ", ";
+            sql += "    d." + DBConfig.DB_FIELD_INTERVAL + ", d." + DBConfig.DB_FIELD_UNIT + " ";
             sql += "FROM ";
-            sql += "    " + DBConfig.DB_TBL_RECIPE + " a, " + DBConfig.DB_TBL_REGION + " b, " + DBConfig.DB_TBL_METHOD + " c, " + DBConfig.DB_TBL_INTERVAL + " d ";
+            sql += "    " + DBConfig.DB_TBL_RECIPE + " a, " + DBConfig.DB_TBL_COUNTRY + " b, " + DBConfig.DB_TBL_METHOD + " c, " + DBConfig.DB_TBL_INTERVAL + " d ";
             sql += "WHERE 1=1 ";
-            sql += "    AND b." + DBConfig.DB_FIELD_REGION_ID + " = a." + DBConfig.DB_FIELD_REGION_ID;
+            sql += "    AND b." + DBConfig.DB_FIELD_COUNTRY_ID + " = a." + DBConfig.DB_FIELD_COUNTRY_ID;
             sql += "    AND c." + DBConfig.DB_FIELD_METHOD_ID + " = a." + DBConfig.DB_FIELD_METHOD_ID;
             sql += "    AND d." + DBConfig.DB_FIELD_INTERVAL_ID + " = a." + DBConfig.DB_FIELD_INTERVAL_ID;
             sql += " AND a." + DBConfig.DB_FIELD_RECIPE_ID + " = " + m_recipe_id + ";";
@@ -123,22 +123,19 @@ public class Recipe {
             recipe.setMaterial(rs.getString(DBConfig.DB_FIELD_RECIPE_MATERIAL));
             recipe.setSteps(rs.getString(DBConfig.DB_FIELD_RECIPE_STEPS));
 
-            Region region = new Region();
-            region.setRegion_id(rs.getInt(DBConfig.DB_FIELD_REGION_ID));
-            region.setRegion_name_tw(rs.getString(DBConfig.DB_FIELD_REGION_NAME_TW));
-            region.setRegion_name_cn(rs.getString(DBConfig.DB_FIELD_REGION_NAME_CN));
-            recipe.setRegion(region);
+            Country country = new Country();
+            country.setCountry_id(rs.getInt(DBConfig.DB_FIELD_COUNTRY_ID));
+            country.setCountry_name(rs.getString(DBConfig.DB_FIELD_COUNTRY_NAME));
+            recipe.setCountry(country);
 
             Method method = new Method();
             method.setMethod_id(rs.getInt(DBConfig.DB_FIELD_METHOD_ID));
-            method.setMethod_name_tw(rs.getString(DBConfig.DB_FIELD_METHOD_NAME_TW));
-            method.setMethod_name_cn(rs.getString(DBConfig.DB_FIELD_METHOD_NAME_CN));
+            method.setMethod_name(rs.getString(DBConfig.DB_FIELD_METHOD_NAME));
             recipe.setMethod(method);
 
             Interval interval = new Interval();
             interval.setInterval_id(rs.getInt(DBConfig.DB_FIELD_INTERVAL_ID));
-            interval.setUnit_tw(rs.getString(DBConfig.DB_FIELD_UNIT_TW));
-            interval.setUnit_cn(rs.getString(DBConfig.DB_FIELD_UNIT_CN));
+            interval.setUnit(rs.getString(DBConfig.DB_FIELD_UNIT));
             recipe.setInterval(interval);
         } catch(SQLException e) {
             e.printStackTrace();;
@@ -156,7 +153,7 @@ public class Recipe {
             sql += "INSERT INTO " + DBConfig.DB_TBL_RECIPE + " ("
                                                   + DBConfig.DB_FIELD_RECIPE_ID + ", " 
                                                   + DBConfig.DB_FIELD_RECIPE_NAME + ", " 
-                                                  + DBConfig.DB_FIELD_RECIPE_REGION_ID + ", " 
+                                                  + DBConfig.DB_FIELD_RECIPE_COUNTRY_ID + ", " 
                                                   + DBConfig.DB_FIELD_RECIPE_METHOD_ID + ", " 
                                                   + DBConfig.DB_FIELD_RECIPE_INTERVAL_ID + ", " 
                                                   + DBConfig.DB_FIELD_RECIPE_LEVEL + ", " 
@@ -166,7 +163,7 @@ public class Recipe {
             "(" 
                     + DBUtil.getNextId(DBConfig.DB_TBL_RECIPE, DBConfig.DB_FIELD_RECIPE_ID) + ", " 
                     + "'" + m_recipe.getRecipe_name() + "', " 
-                    + m_recipe.getRegion().getRegion_id() + ", "
+                    + m_recipe.getCountry().getCountry_id() + ", "
                     + m_recipe.getMethod().getMethod_id() + ", "
                     + m_recipe.getInterval().getInterval_id() + ", "
                     + m_recipe.getLevel() + ", "
@@ -194,7 +191,7 @@ public class Recipe {
             sql += "UPDATE " + DBConfig.DB_TBL_RECIPE + " ";
             sql += "SET ";
             sql +=      DBConfig.DB_FIELD_RECIPE_NAME + "='" + m_recipe.getRecipe_name() + "', " ;
-            sql +=      DBConfig.DB_FIELD_RECIPE_REGION_ID + "=" + m_recipe.getRegion().getRegion_id() + ", " ;
+            sql +=      DBConfig.DB_FIELD_RECIPE_COUNTRY_ID + "=" + m_recipe.getCountry().getCountry_id() + ", " ;
             sql +=      DBConfig.DB_FIELD_RECIPE_METHOD_ID + "=" + m_recipe.getMethod().getMethod_id() + ", " ;
             sql +=      DBConfig.DB_FIELD_RECIPE_INTERVAL_ID + "=" + m_recipe.getInterval().getInterval_id() + ", " ;
             sql +=      DBConfig.DB_FIELD_RECIPE_LEVEL + "=" + m_recipe.getLevel() + ", " ;
@@ -303,17 +300,17 @@ public class Recipe {
     }
 
     /**
-     * @return the region
+     * @return the country
      */
-    public Region getRegion() {
-        return region;
+    public Country getCountry() {
+        return country;
     }
 
     /**
-     * @param region the region to set
+     * @param country the country to set
      */
-    public void setRegion(Region region) {
-        this.region = region;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     /**
@@ -362,24 +359,21 @@ public class Recipe {
         //updateRecipe(getTestingRecipe());
         
         // test: deleteRecipe(int m_recipe_id)
-        //deleteRecipe(5);
+        //deleteRecipe(4);
     }
     
     // for checking
     private static void showRecipeContent(Recipe r) {
         System.out.println(r.getRecipe_id());
         System.out.println(r.getRecipe_name());
-        System.out.println(r.getRegion().getRegion_id());
-        System.out.println(r.getRegion().getRegion_name_tw());
-        System.out.println(r.getRegion().getRegion_name_cn());
+        System.out.println(r.getCountry().getCountry_id());
+        System.out.println(r.getCountry().getCountry_name());
         System.out.println(r.getLevel());
         System.out.println(r.getMethod().getMethod_id());
-        System.out.println(r.getMethod().getMethod_name_tw());
-        System.out.println(r.getMethod().getMethod_name_cn());
+        System.out.println(r.getMethod().getMethod_name());
         System.out.println(r.getInterval().getInterval_id());
         System.out.println(r.getInterval().getInterval());
-        System.out.println(r.getInterval().getUnit_tw());
-        System.out.println(r.getInterval().getUnit_cn());
+        System.out.println(r.getInterval().getUnit());
         System.out.println(r.getMaterial());
         System.out.println(r.getSteps());
     }
@@ -388,10 +382,10 @@ public class Recipe {
     private static Recipe getTestingRecipe() {
         Recipe recipe = new Recipe();
         recipe.setRecipe_id(4);
-        recipe.setRecipe_name("xxx");
-        Region region = new Region();
-        region.setRegion_id(1);
-        recipe.setRegion(region);
+        recipe.setRecipe_name("yyy");
+        Country region = new Country();
+        region.setCountry_id(1);
+        recipe.setCountry(region);
         Method method = new Method();
         method.setMethod_id(1);
         recipe.setMethod(method);
@@ -399,8 +393,8 @@ public class Recipe {
         interval.setInterval_id(1);
         recipe.setInterval(interval);
         recipe.setLevel(1);
-        recipe.setMaterial("xxx");
-        recipe.setSteps("xxx");
+        recipe.setMaterial("yyy");
+        recipe.setSteps("yyy");
         return recipe;
     }
     

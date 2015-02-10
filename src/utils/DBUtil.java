@@ -12,8 +12,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -66,8 +64,8 @@ public class DBUtil {
             // create table "RECIPE"
             stmt.executeUpdate(DBConfig.SQL_CREATE_TBL_RECIPE);
             
-            // create table "REGION"
-            stmt.executeUpdate(DBConfig.SQL_CREATE_TBL_REGION);
+            // create table "COUNTRY"
+            stmt.executeUpdate(DBConfig.SQL_CREATE_TBL_COUNTRY);
             
             // create table "METHOD"
             stmt.executeUpdate(DBConfig.SQL_CREATE_TBL_METHOD);
@@ -75,20 +73,14 @@ public class DBUtil {
             // create table "INTERVAL"
             stmt.executeUpdate(DBConfig.SQL_CREATE_TBL_INTERVAL);
             
-            // create table "SYSPARAM"
-            stmt.executeUpdate(DBConfig.SQL_CREATE_TBL_SYSPARAM);
-            
-            // init region data
-            stmt.executeUpdate(DBConfig.SQL_INSERT_REGION);
+            // init country data
+            stmt.executeUpdate(DBConfig.SQL_INSERT_COUNTRY);
             
             // init method data
             stmt.executeUpdate(DBConfig.SQL_INSERT_METHOD);
             
             // init interval data
             stmt.executeUpdate(DBConfig.SQL_INSERT_INTERVAL);
-            
-            // init sys param data
-            stmt.executeUpdate(DBConfig.SQL_INSERT_SYSPARAM);
             
             // init sys recipe data
             stmt.executeUpdate(DBConfig.SQL_INSERT_RECIPE);
@@ -147,7 +139,7 @@ public class DBUtil {
         
         //DBUtil db = new DBUtil(); //System.out.println("Conn: " + db.getConnection());
         System.out.println("Next Recipe Id: " + getNextId(DBConfig.DB_TBL_RECIPE, DBConfig.DB_FIELD_RECIPE_ID));
-        System.out.println("Next Region Id: " + getNextId(DBConfig.DB_TBL_REGION, DBConfig.DB_FIELD_REGION_ID));
+        System.out.println("Next Country Id: " + getNextId(DBConfig.DB_TBL_COUNTRY, DBConfig.DB_FIELD_COUNTRY_ID));
         System.out.println("Next Method Id: " + getNextId(DBConfig.DB_TBL_METHOD, DBConfig.DB_FIELD_METHOD_ID));
         System.out.println("Next Interval Id: " + getNextId(DBConfig.DB_TBL_INTERVAL, DBConfig.DB_FIELD_INTERVAL_ID));
     }
