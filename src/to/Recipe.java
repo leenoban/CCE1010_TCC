@@ -135,6 +135,7 @@ public class Recipe {
 
             Interval interval = new Interval();
             interval.setInterval_id(rs.getInt(DBConfig.DB_FIELD_INTERVAL_ID));
+            interval.setInterval(rs.getInt(DBConfig.DB_FIELD_INTERVAL));
             interval.setUnit(rs.getString(DBConfig.DB_FIELD_UNIT));
             recipe.setInterval(interval);
         } catch(SQLException e) {
