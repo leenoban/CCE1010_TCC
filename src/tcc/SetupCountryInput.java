@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import to.Country;
 
 /**
@@ -35,6 +37,24 @@ public class SetupCountryInput extends JFrame implements ActionListener {
     
     private void buildGUI() {
         // TODO: Roy - build GUI
+        JFrame frame = new JFrame("Setting - Country - Add / Modify");
+        JButton jbtConfirm = new JButton("Confirm");
+        JButton jbtCancel = new JButton("Cancel");
+        JLabel jlbCountryName = new JLabel("Country Name");
+        //JTextField jtfCountryName = new JTextField();
+        
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.getContentPane().add(jbtConfirm);
+        frame.getContentPane().add(jbtCancel);
+        frame.getContentPane().add(jlbCountryName);
+        //frame.getContentPane().add(jtfCountryName);
+        
+        //jbtConfirm.setHorizontalAlignment(20);
+        //jbtConfirm.setVerticalAlignment(40);
+        
+
         this.setSize(800, 600);
     }
     
