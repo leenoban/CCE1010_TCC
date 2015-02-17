@@ -7,27 +7,23 @@ package tcc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import to.Country;
 
 /**
  *
  * @author AngusLipsey
  */
-public class SetupCountryInput extends JFrame implements ActionListener {
+public class SetupCountryInput extends JDialog implements ActionListener {
     
-    private static String title = "Setting - Country - Add / Modify";
     private String mode;
     
     public SetupCountryInput() {
-        super(title);
         this.mode = Constants.MODE_CREATE;
         buildGUI();
     }
     
     public SetupCountryInput(Country m_country) {
-        super(title);
         this.mode = Constants.MODE_MODIFY;
         buildGUI();
         fillData(m_country);
@@ -35,7 +31,10 @@ public class SetupCountryInput extends JFrame implements ActionListener {
     
     private void buildGUI() {
         // TODO: Roy - build GUI
+        this.setModal(true);
+        this.setTitle(Constants.TITLE_COUNTRY + " - " + this.mode);
         this.setSize(800, 600);
+        //pack();
     }
     
     // fill data to the country form from Country object (for update purpose)
@@ -60,16 +59,14 @@ public class SetupCountryInput extends JFrame implements ActionListener {
     
     public static void main(String args[]) {
         SetupCountryInput sri = new SetupCountryInput();
-        sri.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        sri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sri.setLocationRelativeTo(null);
         sri.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("test")) {
-            cancel();
-        }
+        ;
     }
     
 }

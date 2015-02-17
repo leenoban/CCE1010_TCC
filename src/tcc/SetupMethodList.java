@@ -5,19 +5,18 @@
  */
 package tcc;
 
-import javax.swing.JFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JDialog;
 import to.Method;
 
 /**
  *
  * @author AngusLipsey
  */
-public class SetupMethodList extends JFrame {
-    
-    private static String title = "Setting - Cooking Method";
+public class SetupMethodList extends JDialog implements ActionListener {
     
     public SetupMethodList() {
-        super(title);
         buildGUI();
     }
     
@@ -39,14 +38,22 @@ public class SetupMethodList extends JFrame {
     
     public static void main(String args[]) {
         SetupMethodList sml = new SetupMethodList();
-        sml.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        sml.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sml.setLocationRelativeTo(null);
         sml.setVisible(true);
     }
     
     private void buildGUI() {
         // TODO: Benny - build GUI
+        this.setModal(true);
+        this.setTitle(Constants.TITLE_METHOD);
         this.setSize(800, 600);
+        //pack();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ;
     }
     
 }

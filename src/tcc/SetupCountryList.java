@@ -1,6 +1,8 @@
 package tcc;
 
-import javax.swing.JFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JDialog;
 import to.Country;
 
 /*
@@ -13,12 +15,9 @@ import to.Country;
  *
  * @author AngusLipsey
  */
-public class SetupCountryList extends JFrame {
-    
-    private static String title = "Setting - Country";
+public class SetupCountryList extends JDialog implements ActionListener {
     
     public SetupCountryList() {
-        super(title);
         buildGUI();
     }
     
@@ -40,7 +39,7 @@ public class SetupCountryList extends JFrame {
     
     public static void main(String args[]) {
         SetupCountryList srl = new SetupCountryList();
-        srl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        srl.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         srl.setLocationRelativeTo(null);
         srl.setVisible(true);
         srl.showCountryInputFrame();
@@ -48,7 +47,15 @@ public class SetupCountryList extends JFrame {
     
     private void buildGUI() {
         // TODO: Benny - build GUI
+        this.setModal(true);
+        this.setTitle(Constants.TITLE_COUNTRY);
         this.setSize(800, 600);
+        //pack();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ;
     }
     
 }

@@ -5,19 +5,18 @@
  */
 package tcc;
 
-import javax.swing.JFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JDialog;
 import to.Interval;
 
 /**
  *
  * @author AngusLipsey
  */
-public class SetupIntervalList extends JFrame {
-    
-    private static String title = "Setting - Required Time";
+public class SetupIntervalList extends JDialog implements ActionListener {
     
     public SetupIntervalList() {
-        super(title);
         buildGUI();
     }
     
@@ -39,14 +38,22 @@ public class SetupIntervalList extends JFrame {
     
     public static void main(String args[]) {
         SetupIntervalList sml = new SetupIntervalList();
-        sml.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        sml.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sml.setLocationRelativeTo(null);
         sml.setVisible(true);
     }
     
     private void buildGUI() {
         // TODO: Benny - build GUI
+        this.setModal(true);
+        this.setTitle(Constants.TITLE_INTERVAL);
         this.setSize(800, 600);
+        //pack();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ;
     }
     
 }

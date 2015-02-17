@@ -126,8 +126,8 @@ public class DBConfig {
                                                   + DB_FIELD_RECIPE_MATERIAL + ", " 
                                                   + DB_FIELD_RECIPE_STEPS + ")" +
             "VALUES " +
-            "(1, 'AAA', 1, 1, 1, 1, '(BlahBlahBlah)', '(BlahBlahBlah)'), " +
-            "(2, 'BBB', 2, 2, 2, 2, '(BlahBlahBlah)', '(BlahBlahBlah)'), " +
-            "(3, 'CCC', 3, 3, 3, 3, '(BlahBlahBlah)', '(BlahBlahBlah)'); "
+            "(1, 'Kung Pao chicken', 1, 1, 1, 1, '(BlahBlahBlah)', '(BlahBlahBlah)'), " +
+            "(2, 'BBQ beef short ribs', 2, 2, 2, 2, '(BlahBlahBlah)', '(BlahBlahBlah)'), " +
+            "(3, 'Oysters with chilli, ginger & rice wine vinegar', 3, 3, 3, 3, '(BlahBlahBlah)', '(BlahBlahBlah)'); "
             ;
 }

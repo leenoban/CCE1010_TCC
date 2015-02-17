@@ -7,26 +7,23 @@ package tcc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import to.Interval;
 
 /**
  *
  * @author AngusLipsey
  */
-public class SetupIntervalInput extends JFrame implements ActionListener {
-    
-    private static String title = "Setting - Required Time - Add / Modify";
+public class SetupIntervalInput extends JDialog implements ActionListener {
+
     private String mode;
     
     public SetupIntervalInput() {
-        super(title);
         this.mode = Constants.MODE_CREATE;
         buildGUI();
     }
     
     public SetupIntervalInput(Interval m_interval) {
-        super(title);
         this.mode = Constants.MODE_MODIFY;
         buildGUI();
         fillData(m_interval);
@@ -34,7 +31,10 @@ public class SetupIntervalInput extends JFrame implements ActionListener {
     
     private void buildGUI() {
         // TODO: Roy - build GUI
+        this.setModal(true);
+        this.setTitle(Constants.TITLE_INTERVAL + " - " + this.mode);
         this.setSize(800, 600);
+        //pack();
     }
     
     // fill data to the interval form from Interval object (for update purpose)
@@ -59,14 +59,14 @@ public class SetupIntervalInput extends JFrame implements ActionListener {
     
     public static void main(String args[]) {
         SetupIntervalInput sri = new SetupIntervalInput();
-        sri.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        sri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sri.setLocationRelativeTo(null);
         sri.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //
+        ;
     }
     
 }

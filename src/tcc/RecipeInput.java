@@ -5,26 +5,29 @@
  */
 package tcc;
 
-import javax.swing.JFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JDialog;
 import to.Recipe;
 
 /**
  *
  * @author AngusLipsey
  */
-public class RecipeInput extends JFrame {
+//public class RecipeInput extends JFrame {
+public class RecipeInput extends JDialog implements ActionListener {
     
-    private static String title = "Personal Recipe - Add / Modify";
+    private TCC parent;
     private String mode;
     
-    public RecipeInput() {
-        super(title);
+    public RecipeInput(TCC m_parent) {
+        this.parent = m_parent;
         this.mode = Constants.MODE_CREATE;
         buildGUI();
     }
     
-    public RecipeInput(Recipe m_recipe) {
-        super(title);
+    public RecipeInput(Recipe m_recipe, TCC m_parent) { //System.out.println("m_recipe.getRecipe_id(): " + m_recipe.getRecipe_id());
+        this.parent = m_parent;
         this.mode = Constants.MODE_MODIFY;
         buildGUI();
         fillData(m_recipe);
@@ -32,7 +35,10 @@ public class RecipeInput extends JFrame {
     
     private void buildGUI() {
         // TODO: Joe - build GUI
+        this.setModal(true);
+        this.setTitle(Constants.TITLE_RECIPE + " - " + this.mode);
         this.setSize(800, 600);
+        //pack();
     }
     
     // fill data to the recipe form from Recipe object (for update purpose)
@@ -56,10 +62,15 @@ public class RecipeInput extends JFrame {
     }
     
     public static void main(String args[]) {
-        RecipeInput ri = new RecipeInput();
-        ri.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        RecipeInput ri = new RecipeInput(null);
         ri.setLocationRelativeTo(null);
+        ri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         ri.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ;
     }
     
 }
