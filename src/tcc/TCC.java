@@ -7,6 +7,7 @@ package tcc;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -134,7 +135,7 @@ public class TCC extends JFrame implements ActionListener {
         BufferedImage bi = null;
         
         try {
-            bi = ImageIO.read(new File("logo_28_28.png"));
+            bi = ImageIO.read(new File("images/logo_28_28.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -155,6 +156,7 @@ public class TCC extends JFrame implements ActionListener {
         tbl_recipe.setGridColor(Color.LIGHT_GRAY);
         
         refreshRecipeList(Recipe.getRecipeList());
+        
         
         tbl_recipe.setAutoCreateRowSorter(true);
         JScrollPane jsp = new JScrollPane(tbl_recipe);
@@ -195,7 +197,19 @@ public class TCC extends JFrame implements ActionListener {
                 tbl_data[i][3] = r.getCountry().getCountry_name();
                 tbl_data[i][4] = r.getMethod().getMethod_name();
                 tbl_data[i][5] = r.getInterval().getInterval() + " " + r.getInterval().getUnit();
-                tbl_data[i][6] = r.getLevel();
+                int level = r.getLevel();
+                
+                
+                String img_path = null;
+                
+                try {
+                    img_path = new File(".").getCanonicalPath() + "/images/";
+                    img_path += "star_" + level + "_80_18.png";
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+                ImageIcon ic = new ImageIcon(img_path);
+                tbl_data[i][6] = ic;
             }
             model = new TccTableModel(TccTableModel.TBL_RECIPE, tbl_data);
             
@@ -232,7 +246,10 @@ public class TCC extends JFrame implements ActionListener {
                 tbl_recipe.getColumnModel().getColumn(i).setPreferredWidth(120);
             } else if(i==6) {
                 tbl_recipe.getColumnModel().getColumn(i).setPreferredWidth(120);
+                tbl_recipe.getColumnModel().getColumn(i).setCellRenderer(new ImageRenderer());
             }
+            
+            
 
         }
         
@@ -375,4 +392,20 @@ public class TCC extends JFrame implements ActionListener {
         return count;
     }
     
+}
+
+class ImageRenderer extends DefaultTableCellRenderer {
+ 
+    @Override
+    public Component getTableCellRendererComponent(JTable table,Object value, boolean isSelected,boolean hasFocus, int row, int column)
+    {
+        JLabel label = new JLabel();
+ 
+        if (value!=null) {
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setIcon(new ImageIcon(value.toString()));
+        }
+ 
+        return label;
+    }
 }
