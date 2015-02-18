@@ -78,7 +78,6 @@ public class TCC extends JFrame implements ActionListener {
     
     private void addListenerToObject() {
         
-        //logo;
         txt_search.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent ke) {
@@ -93,7 +92,6 @@ public class TCC extends JFrame implements ActionListener {
         });
         
         btn_search.addActionListener(this);
-
         
         tbl_recipe.addMouseListener(new MouseAdapter() {
             @Override
@@ -157,14 +155,13 @@ public class TCC extends JFrame implements ActionListener {
         
         refreshRecipeList(Recipe.getRecipeList());
         
-        
         tbl_recipe.setAutoCreateRowSorter(true);
         JScrollPane jsp = new JScrollPane(tbl_recipe);
         jsp.setPreferredSize(new Dimension(800, 300));
         tbl_recipe.setFillsViewportHeight(true);
         pl_middle_center.add(jsp);
-        
         pl_middle.add(pl_middle_center, BorderLayout.CENTER);
+        
         pl_middle_right.setLayout(new BoxLayout(pl_middle_right, BoxLayout.PAGE_AXIS));
         pl_middle_right.setBorder(new TitledBorder("Setting"));
         pl_middle_right.add(btn_country);
@@ -199,9 +196,7 @@ public class TCC extends JFrame implements ActionListener {
                 tbl_data[i][5] = r.getInterval().getInterval() + " " + r.getInterval().getUnit();
                 int level = r.getLevel();
                 
-                
                 String img_path = null;
-                
                 try {
                     img_path = new File(".").getCanonicalPath() + "/images/";
                     img_path += "star_" + level + "_80_18.png";
@@ -248,8 +243,6 @@ public class TCC extends JFrame implements ActionListener {
                 tbl_recipe.getColumnModel().getColumn(i).setPreferredWidth(120);
                 tbl_recipe.getColumnModel().getColumn(i).setCellRenderer(new ImageRenderer());
             }
-            
-            
 
         }
         
@@ -344,7 +337,7 @@ public class TCC extends JFrame implements ActionListener {
             if(getTableCheckedCount()==0 || getTableCheckedCount()>1) {
                 JOptionPane.showMessageDialog(this, Constants.NOT_ONE_ITEM_SELECTED);
             } else {
-                // TODO: get selected item
+                // get selected item
                 Recipe r = new Recipe();
                 for(int i=0; i<tbl_recipe.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean)tbl_recipe.getModel().getValueAt(i, 0);
@@ -360,7 +353,7 @@ public class TCC extends JFrame implements ActionListener {
             if(getTableCheckedCount()<1) {
                 JOptionPane.showMessageDialog(this, Constants.NO_ITEM_SELECTED);
             } else {
-                // TODO: get selected item
+                // get selected item
                 ArrayList list = new ArrayList();
                 for(int i=0; i<tbl_recipe.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean)tbl_recipe.getModel().getValueAt(i, 0);
