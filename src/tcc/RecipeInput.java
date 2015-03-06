@@ -70,7 +70,7 @@ public class RecipeInput extends JDialog implements ActionListener {
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     JScrollPane scrollStep = new JScrollPane(txtStep,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    
+    int chkRecipeID;
     //Joe new add
     
     public RecipeInput(TCC m_parent) {
@@ -172,7 +172,7 @@ public class RecipeInput extends JDialog implements ActionListener {
         // TODO: Joe - fill data
         //Joe new add
         
-        int chkRecipeID = m_recipe.getRecipe_id();
+        chkRecipeID = m_recipe.getRecipe_id();
         Recipe r = Recipe.getRecipe(chkRecipeID);
         
         int chkLevel=r.getLevel();
@@ -244,15 +244,15 @@ public class RecipeInput extends JDialog implements ActionListener {
                 {
                     //Add
                     //updateRecipe(Recipe.getRecipe(2));
-                    
-                    
                     if(mode.equals(Constants.MODE_CREATE)) {
                         updateRecipe(Recipe.getRecipe(2));   
                 } 
+                    //Modify Recipe
                     else if(mode.equals(Constants.MODE_MODIFY)) 
-                    {                   
-  
+                    { 
+                       
                     Recipe r = new Recipe();
+                    
                     to.Country c = new to.Country();
                     to.Method m = new to.Method();
                     to.Interval i = new to.Interval();
@@ -261,10 +261,10 @@ public class RecipeInput extends JDialog implements ActionListener {
                     String txtM = txtMaterial.getText();
                     String txtS = txtStep.getText();
                     
-                    r.setRecipe_id(4);
+                    r.setRecipe_id(chkRecipeID);
                     r.setRecipe_name(txtR);
                    
-                    c.setCountry_id(1);
+                    c.setCountry_id(1); 
                     r.setCountry(c);
                     
                     m.setMethod_id(1);
@@ -297,7 +297,6 @@ public class RecipeInput extends JDialog implements ActionListener {
                     r.setMaterial(txtM);
                     r.setSteps(txtS);
                     
-          
                     updateRecipe(r);
                   
                     setVisible(false);
