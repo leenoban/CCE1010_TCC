@@ -88,8 +88,6 @@ public class RecipeInput extends JDialog implements ActionListener {
     
     private void buildGUI() {
         // TODO: Joe - buildGUI
-   
-        
         // Joe new add
         //panel to hold tabs and button
             panelButton.setLayout(new GridLayout(1,2));
@@ -173,12 +171,15 @@ public class RecipeInput extends JDialog implements ActionListener {
     private void fillData(Recipe m_recipe) {
         // TODO: Joe - fill data
         //Joe new add
+        
         int chkRecipeID = m_recipe.getRecipe_id();
-        int chkLevel=Recipe.getRecipe(chkRecipeID).getLevel();
-        txtRecipeName.setText(Recipe.getRecipe(chkRecipeID).getRecipe_name());
-        cboCountry.addItem(Recipe.getRecipe(chkRecipeID).getCountry().getCountry_name());
-        cboCookingMethod.addItem(Recipe.getRecipe(chkRecipeID).getMethod().getMethod_name());
-        cboTimeRequire.addItem(Recipe.getRecipe(chkRecipeID).getInterval().getInterval());
+        Recipe r = Recipe.getRecipe(chkRecipeID);
+        
+        int chkLevel=r.getLevel();
+        txtRecipeName.setText(r.getRecipe_name());
+        cboCountry.addItem(r.getCountry().getCountry_name());
+        cboCookingMethod.addItem(r.getMethod().getMethod_name());
+        cboTimeRequire.addItem(r.getInterval().getInterval());
         
         switch (chkLevel)
         {
@@ -201,8 +202,8 @@ public class RecipeInput extends JDialog implements ActionListener {
                 break;
         }
         
-        txtMaterial.setText(Recipe.getRecipe(chkRecipeID).getMaterial());
-        txtStep.setText(Recipe.getRecipe(chkRecipeID).getSteps());
+        txtMaterial.setText(r.getMaterial());
+        txtStep.setText(r.getSteps());
         //Joe new add
     }
     
@@ -241,8 +242,22 @@ public class RecipeInput extends JDialog implements ActionListener {
             }
             else if (obj==btnSave)
                 {
-                //updateRecipe(m_recipe);
-                JOptionPane.showMessageDialog(null,"Saved");
+                    //Add
+                    //updateRecipe(Recipe.getRecipe(2));
+                  
+                    //Modify
+                    Recipe r = new Recipe();
+                    String a = txtRecipeName.getText();
+                    r.setRecipe_id(4);
+                    r.setRecipe_name(a);
+                    r.setLevel(1);
+                    r.setMaterial("abc");
+                    r.setSteps("def");
+                    JOptionPane.showMessageDialog(null, r.getRecipe_name()+ " - "+ r.getMaterial()+ " - " +r.getSteps());
+                    updateRecipe(r);
+                  
+                    setVisible(false);
+                    
                 }
         
         }
