@@ -244,20 +244,64 @@ public class RecipeInput extends JDialog implements ActionListener {
                 {
                     //Add
                     //updateRecipe(Recipe.getRecipe(2));
-                  
-                    //Modify
+                    
+                    
+                    if(mode.equals(Constants.MODE_CREATE)) {
+                        updateRecipe(Recipe.getRecipe(2));   
+                } 
+                    else if(mode.equals(Constants.MODE_MODIFY)) 
+                    {                   
+  
                     Recipe r = new Recipe();
-                    String a = txtRecipeName.getText();
+                    to.Country c = new to.Country();
+                    to.Method m = new to.Method();
+                    to.Interval i = new to.Interval();
+                    
+                    String txtR = txtRecipeName.getText();
+                    String txtM = txtMaterial.getText();
+                    String txtS = txtStep.getText();
+                    
                     r.setRecipe_id(4);
-                    r.setRecipe_name(a);
-                    r.setLevel(1);
-                    r.setMaterial("abc");
-                    r.setSteps("def");
-                    JOptionPane.showMessageDialog(null, r.getRecipe_name()+ " - "+ r.getMaterial()+ " - " +r.getSteps());
+                    r.setRecipe_name(txtR);
+                   
+                    c.setCountry_id(1);
+                    r.setCountry(c);
+                    
+                    m.setMethod_id(1);
+                    r.setMethod(m);
+                    
+                    i.setInterval_id(3);
+                    r.setInterval(i);
+
+                       if (radio1.isSelected())
+                       {
+                            r.setLevel(1);
+                       }
+                       else if (radio2.isSelected())
+                       {
+                            r.setLevel(2);
+                       }
+                       else if (radio3.isSelected())
+                       {
+                           r.setLevel(3);
+                       }
+                       else if (radio4.isSelected())
+                       {
+                            r.setLevel(4);
+                       }
+                       else if (radio5.isSelected())
+                       {
+                            r.setLevel(5);
+                       }
+                    
+                    r.setMaterial(txtM);
+                    r.setSteps(txtS);
+                    
+          
                     updateRecipe(r);
                   
                     setVisible(false);
-                    
+                    }
                 }
         
         }
