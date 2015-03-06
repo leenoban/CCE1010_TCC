@@ -214,6 +214,8 @@ public class RecipeInput extends JDialog implements ActionListener {
         } else if(this.mode.equals(Constants.MODE_MODIFY)) {
             Recipe.updateRecipe(m_recipe);
         }
+        parent.refreshRecipeList(Recipe.getRecipeList());
+        this.cancel();
     }
     
     // for cancel button call
