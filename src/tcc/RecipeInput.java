@@ -10,21 +10,18 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import to.Recipe;
 import java.awt.FlowLayout;
-import java.awt.BorderLayout;  
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import javax.swing.JFrame; 
-import javax.swing.JTabbedPane; 
-import javax.swing.JLabel; 
-import javax.swing.JPanel; 
-import javax.swing.JButton; 
+import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,21 +29,21 @@ import javax.swing.JOptionPane;
  */
 //public class RecipeInput extends JFrame {
 public class RecipeInput extends JDialog implements ActionListener {
-    
+
     private TCC parent;
     private String mode;
     // Joe new added
     JPanel panelNew = new JPanel();
     JPanel panelButton = new JPanel();
-    JPanel panelLeft = new JPanel(); 
-    JPanel panelRight = new JPanel(); 
+    JPanel panelLeft = new JPanel();
+    JPanel panelRight = new JPanel();
     JPanel panelRadioButton = new JPanel();
     JPanel panelOne = new JPanel();
-    JPanel panelTop1= new JPanel();
+    JPanel panelTop1 = new JPanel();
     JPanel panelTwo = new JPanel();
-    JPanel panelTop2= new JPanel(); 
+    JPanel panelTop2 = new JPanel();
     JPanel panelThree = new JPanel();
-    JTabbedPane tbd1 = new JTabbedPane(); 
+    JTabbedPane tbd1 = new JTabbedPane();
     JButton btnCancel = new JButton("Cancel");
     JButton btnSave = new JButton("Save");
     JLabel lblRecipeName = new JLabel("Recipe Name");
@@ -66,129 +63,127 @@ public class RecipeInput extends JDialog implements ActionListener {
     ButtonGroup radioButtonGroup = new ButtonGroup();
     JTextArea txtMaterial = new JTextArea();
     JTextArea txtStep = new JTextArea();
-    JScrollPane scrollMaterial = new JScrollPane(txtMaterial,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+    JScrollPane scrollMaterial = new JScrollPane(txtMaterial, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    JScrollPane scrollStep = new JScrollPane(txtStep,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+    JScrollPane scrollStep = new JScrollPane(txtStep, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     int chkRecipeID;
     //Joe new add
-    
+
     public RecipeInput(TCC m_parent) {
         this.parent = m_parent;
         this.mode = Constants.MODE_CREATE;
         buildGUI();
     }
-    
+
     public RecipeInput(Recipe m_recipe, TCC m_parent) { //System.out.println("m_recipe.getRecipe_id(): " + m_recipe.getRecipe_id());
         this.parent = m_parent;
         this.mode = Constants.MODE_MODIFY;
         buildGUI();
         fillData(m_recipe);
     }
-    
+
     private void buildGUI() {
         // TODO: Joe - buildGUI
         // Joe new add
         //panel to hold tabs and button
-            panelButton.setLayout(new GridLayout(1,2));
-            panelButton.add(btnCancel);
-            panelButton.add(btnSave);
-            btnCancel.addActionListener(this);
-            btnSave.addActionListener(this);
-            //Tab 1 - top panel
+        panelButton.setLayout(new GridLayout(1, 2));
+        panelButton.add(btnCancel);
+        panelButton.add(btnSave);
+        btnCancel.addActionListener(this);
+        btnSave.addActionListener(this);
+        //Tab 1 - top panel
 
-            panelLeft.setLayout(new GridLayout(5,0));
-            panelLeft.add(lblRecipeName);
-            panelLeft.add(lblCountry);
-            panelLeft.add(lblCookingMethod);
-            panelLeft.add(lblTimeRequire);
-            panelLeft.add(lblDifficulties);
-            
-            panelRight.setLayout(new GridLayout(5,0));
-            panelRight.add(txtRecipeName);
-            panelRight.add(cboCountry);
-            panelRight.add(cboCookingMethod);
-            panelRight.add(cboTimeRequire);
-            
+        panelLeft.setLayout(new GridLayout(5, 0));
+        panelLeft.add(lblRecipeName);
+        panelLeft.add(lblCountry);
+        panelLeft.add(lblCookingMethod);
+        panelLeft.add(lblTimeRequire);
+        panelLeft.add(lblDifficulties);
+
+        panelRight.setLayout(new GridLayout(5, 0));
+        panelRight.add(txtRecipeName);
+        panelRight.add(cboCountry);
+        panelRight.add(cboCookingMethod);
+        panelRight.add(cboTimeRequire);
+
             //Tab 1 - panel to hold radio button with different layout  
-            
-            panelRadioButton.setLayout(new FlowLayout(FlowLayout.LEFT));  
-            radioButtonGroup.add(radio5);
-            radioButtonGroup.add(radio4);
-            radioButtonGroup.add(radio3);
-            radioButtonGroup.add(radio2);
-            radioButtonGroup.add(radio1);
-            panelRadioButton.add(radio5);
-            panelRadioButton.add(radio4);
-            panelRadioButton.add(radio3);
-            panelRadioButton.add(radio2);
-            panelRadioButton.add(radio1);
-            
-            //create a layout to hold the label,combox,textfield and radio button panel for Tab1
-            panelOne.setLayout(new GridLayout(1,1));
-            panelOne.add(panelLeft);
-            panelOne.add(panelRight);
-            panelRight.add(panelRadioButton);
-            
-            //Tab 2 - create text area
-            panelTop1.setLayout(new GridLayout(1,0));
-            txtMaterial.setLineWrap(true);
-            txtMaterial.setWrapStyleWord(true);
-            panelTop1.add(scrollMaterial);
-            
-            //create a layout to hold the text area for tab2
-            panelTwo.setLayout(new BorderLayout(0,0));
-            panelTwo.add(panelTop1, BorderLayout.CENTER);
-            panelTwo.add(scrollMaterial);
-            
-            //Tab3 - create text area          
-            panelTop2.setLayout(new BorderLayout(1,0));
-            txtStep.setLineWrap(true);
-            txtStep.setWrapStyleWord(true);
-            panelTop2.add(scrollStep);
-            
-            //create a layout to hold the text area for tab2
-            panelThree.setLayout(new BorderLayout(5,10));
-            panelThree.add(panelTop2, BorderLayout.CENTER);
-             
-            //Create tabs
-            tbd1.addTab("Basic Information", panelOne);
-            tbd1.addTab("Material", panelTwo);
-            tbd1.addTab("Steps", panelThree);
-            
-            //Panel to hold the tabs and button
-            add(tbd1,BorderLayout.NORTH);
-            add(panelButton,BorderLayout.SOUTH);
+        panelRadioButton.setLayout(new FlowLayout(FlowLayout.LEFT));
+        radioButtonGroup.add(radio5);
+        radioButtonGroup.add(radio4);
+        radioButtonGroup.add(radio3);
+        radioButtonGroup.add(radio2);
+        radioButtonGroup.add(radio1);
+        panelRadioButton.add(radio5);
+        panelRadioButton.add(radio4);
+        panelRadioButton.add(radio3);
+        panelRadioButton.add(radio2);
+        panelRadioButton.add(radio1);
+
+        //create a layout to hold the label,combox,textfield and radio button panel for Tab1
+        panelOne.setLayout(new GridLayout(1, 1));
+        panelOne.add(panelLeft);
+        panelOne.add(panelRight);
+        panelRight.add(panelRadioButton);
+
+        //Tab 2 - create text area
+        panelTop1.setLayout(new GridLayout(1, 0));
+        txtMaterial.setLineWrap(true);
+        txtMaterial.setWrapStyleWord(true);
+        panelTop1.add(scrollMaterial);
+
+        //create a layout to hold the text area for tab2
+        panelTwo.setLayout(new BorderLayout(0, 0));
+        panelTwo.add(panelTop1, BorderLayout.CENTER);
+        panelTwo.add(scrollMaterial);
+
+        //Tab3 - create text area          
+        panelTop2.setLayout(new BorderLayout(1, 0));
+        txtStep.setLineWrap(true);
+        txtStep.setWrapStyleWord(true);
+        panelTop2.add(scrollStep);
+
+        //create a layout to hold the text area for tab2
+        panelThree.setLayout(new BorderLayout(5, 10));
+        panelThree.add(panelTop2, BorderLayout.CENTER);
+
+        //Create tabs
+        tbd1.addTab("Basic Information", panelOne);
+        tbd1.addTab("Material", panelTwo);
+        tbd1.addTab("Steps", panelThree);
+
+        //Panel to hold the tabs and button
+        add(tbd1, BorderLayout.NORTH);
+        add(panelButton, BorderLayout.SOUTH);
         //Joe new add    
-            
+
         this.setModal(true);
         this.setTitle(Constants.TITLE_RECIPE + " - " + this.mode);
         this.setSize(800, 600);
         pack();
     }
-    
+
     // fill data to the recipe form from Recipe object (for update purpose)
     private void fillData(Recipe m_recipe) {
         // TODO: Joe - fill data
         //Joe new add
-        
+
         chkRecipeID = m_recipe.getRecipe_id();
         Recipe r = Recipe.getRecipe(chkRecipeID);
-        
-        int chkLevel=r.getLevel();
+
+        int chkLevel = r.getLevel();
         txtRecipeName.setText(r.getRecipe_name());
         cboCountry.addItem(r.getCountry().getCountry_name());
         cboCookingMethod.addItem(r.getMethod().getMethod_name());
         cboTimeRequire.addItem(r.getInterval().getInterval());
-        
-        switch (chkLevel)
-        {
+
+        switch (chkLevel) {
             case 5:
                 radio5.setSelected(true);
                 break;
             case 4:
                 radio4.setSelected(true);
-                break;    
+                break;
             case 3:
                 radio3.setSelected(true);
                 break;
@@ -201,110 +196,96 @@ public class RecipeInput extends JDialog implements ActionListener {
             default:
                 break;
         }
-        
+
         txtMaterial.setText(r.getMaterial());
         txtStep.setText(r.getSteps());
         //Joe new add
     }
-    
+
     // Update DB record - for save button call
     private void updateRecipe(Recipe m_recipe) {
-        if(this.mode.equals(Constants.MODE_CREATE)) {
+        if (this.mode.equals(Constants.MODE_CREATE)) {
             Recipe.insertRecipe(m_recipe);
-        } else if(this.mode.equals(Constants.MODE_MODIFY)) {
+        } else if (this.mode.equals(Constants.MODE_MODIFY)) {
             Recipe.updateRecipe(m_recipe);
         }
         parent.refreshRecipeList(Recipe.getRecipeList());
         this.cancel();
     }
-    
+
     // for cancel button call
     private void cancel() {
         setVisible(false);
         dispose();
     }
-    
+
     public static void main(String args[]) {
         RecipeInput ri = new RecipeInput(null);
         ri.setLocationRelativeTo(null);
         ri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         ri.setVisible(true);
-        
+
     }
-   
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         // joe new add
         Object obj = e.getSource();
-            if(obj==btnCancel) {
-        
-                cancel();
-            }
-            else if (obj==btnSave)
-                {
-                    //Add
-                    //updateRecipe(Recipe.getRecipe(2));
-                    if(mode.equals(Constants.MODE_CREATE)) {
-                        updateRecipe(Recipe.getRecipe(2));   
-                } 
-                    //Modify Recipe
-                    else if(mode.equals(Constants.MODE_MODIFY)) 
-                    { 
-                       
-                    Recipe r = new Recipe();
-                    
-                    to.Country c = new to.Country();
-                    to.Method m = new to.Method();
-                    to.Interval i = new to.Interval();
-                    
-                    String txtR = txtRecipeName.getText();
-                    String txtM = txtMaterial.getText();
-                    String txtS = txtStep.getText();
-                    
-                    r.setRecipe_id(chkRecipeID);
-                    r.setRecipe_name(txtR);
-                   
-                    c.setCountry_id(1); 
-                    r.setCountry(c);
-                    
-                    m.setMethod_id(1);
-                    r.setMethod(m);
-                    
-                    i.setInterval_id(3);
-                    r.setInterval(i);
+        if (obj == btnCancel) {
 
-                       if (radio1.isSelected())
-                       {
-                            r.setLevel(1);
-                       }
-                       else if (radio2.isSelected())
-                       {
-                            r.setLevel(2);
-                       }
-                       else if (radio3.isSelected())
-                       {
-                           r.setLevel(3);
-                       }
-                       else if (radio4.isSelected())
-                       {
-                            r.setLevel(4);
-                       }
-                       else if (radio5.isSelected())
-                       {
-                            r.setLevel(5);
-                       }
-                    
-                    r.setMaterial(txtM);
-                    r.setSteps(txtS);
-                    
-                    updateRecipe(r);
-                  
-                    setVisible(false);
-                    }
+            cancel();
+        } else if (obj == btnSave) {
+                    //Add
+            //updateRecipe(Recipe.getRecipe(2));
+            if (mode.equals(Constants.MODE_CREATE)) {
+                updateRecipe(Recipe.getRecipe(2));
+            } //Modify Recipe
+            else if (mode.equals(Constants.MODE_MODIFY)) {
+
+                Recipe r = new Recipe();
+
+                to.Country c = new to.Country();
+                to.Method m = new to.Method();
+                to.Interval i = new to.Interval();
+
+                String txtR = txtRecipeName.getText();
+                String txtM = txtMaterial.getText();
+                String txtS = txtStep.getText();
+
+                r.setRecipe_id(chkRecipeID);
+                r.setRecipe_name(txtR);
+
+                c.setCountry_id(1);
+                r.setCountry(c);
+
+                m.setMethod_id(1);
+                r.setMethod(m);
+
+                i.setInterval_id(3);
+                r.setInterval(i);
+
+                if (radio1.isSelected()) {
+                    r.setLevel(1);
+                } else if (radio2.isSelected()) {
+                    r.setLevel(2);
+                } else if (radio3.isSelected()) {
+                    r.setLevel(3);
+                } else if (radio4.isSelected()) {
+                    r.setLevel(4);
+                } else if (radio5.isSelected()) {
+                    r.setLevel(5);
                 }
-        
+
+                r.setMaterial(txtM);
+                r.setSteps(txtS);
+
+                updateRecipe(r);
+
+                setVisible(false);
+            }
         }
+
+    }
         //Joe new add
 }

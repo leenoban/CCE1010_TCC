@@ -16,6 +16,7 @@ import to.Interval;
  */
 public class SetupIntervalInput extends JDialog implements ActionListener {
 
+    private SetupIntervalList parent;
     private String mode;
     
     public SetupIntervalInput() {
@@ -23,7 +24,8 @@ public class SetupIntervalInput extends JDialog implements ActionListener {
         buildGUI();
     }
     
-    public SetupIntervalInput(Interval m_interval) {
+    public SetupIntervalInput(Interval m_interval, SetupIntervalList m_parent) {
+        this.parent = m_parent;
         this.mode = Constants.MODE_MODIFY;
         buildGUI();
         fillData(m_interval);

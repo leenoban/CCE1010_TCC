@@ -16,6 +16,7 @@ import to.Country;
  */
 public class SetupCountryInput extends JDialog implements ActionListener {
     
+    private SetupCountryList parent;
     private String mode;
     
     public SetupCountryInput() {
@@ -23,7 +24,8 @@ public class SetupCountryInput extends JDialog implements ActionListener {
         buildGUI();
     }
     
-    public SetupCountryInput(Country m_country) {
+    public SetupCountryInput(Country m_country, SetupCountryList m_parent) {
+        this.parent = m_parent;
         this.mode = Constants.MODE_MODIFY;
         buildGUI();
         fillData(m_country);

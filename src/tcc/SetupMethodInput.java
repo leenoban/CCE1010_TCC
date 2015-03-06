@@ -16,6 +16,7 @@ import to.Method;
  */
 public class SetupMethodInput extends JDialog implements ActionListener {
     
+    private SetupMethodList parent;
     private String mode;
     
     public SetupMethodInput() {
@@ -23,7 +24,8 @@ public class SetupMethodInput extends JDialog implements ActionListener {
         buildGUI();
     }
     
-    public SetupMethodInput(Method m_method) {
+    public SetupMethodInput(Method m_method, SetupMethodList m_parent) {
+        this.parent = m_parent;
         this.mode = Constants.MODE_MODIFY;
         buildGUI();
         fillData(m_method);
