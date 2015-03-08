@@ -88,7 +88,15 @@ public class DBConfig {
             "(1, 'China'), " +
             "(2, 'England'), " +
             "(3, 'Italy'), " +
-            "(4, 'France'); "
+            "(4, 'Italy'), " +
+            "(5, 'Italy'), " +
+            "(6, 'Italy'), " +
+            "(7, 'Italy'), " +
+            "(8, 'Italy'), " +
+            "(9, 'Italy'), " +
+            "(10, 'Italy'), " +
+            "(11, 'France'); "
+            
             ;
     
     public static final String SQL_INSERT_METHOD =
