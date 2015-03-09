@@ -54,7 +54,7 @@ public class Interval {
     }
     
     // retrieve interval from DB by interval id
-    private static Interval getInterval(int m_interval_id) {
+    public static Interval getInterval(int m_interval_id) {
         Interval interval = new Interval();
         
         try {

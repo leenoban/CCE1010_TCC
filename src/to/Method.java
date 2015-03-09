@@ -52,7 +52,7 @@ public class Method {
     }
     
     // retrieve method from DB by method id
-    private static Method getMethod(int m_method_id) {
+    public static Method getMethod(int m_method_id) {
         Method method = new Method();
         
         try {

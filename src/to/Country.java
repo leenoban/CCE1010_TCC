@@ -52,7 +52,7 @@ public class Country {
     }
     
     // retrieve country from DB by country id
-    private static Country getCountry(int m_country_id) {
+    public static Country getCountry(int m_country_id) {
         Country country = new Country();
         
         try {
