@@ -229,6 +229,50 @@ public class Recipe {
             e.printStackTrace();
         }
     }
+    
+    /** 
+     * check foreign key of recipe inuse
+     * 
+     * USAGE:
+     * - check country_id inuse : isForeignKeyInuse(DBConfig.DB_FIELD_COUNTRY_ID, 2);
+     * - check method_id inuse  : isForeignKeyInuse(DBConfig.DB_FIELD_METHOD_ID, 3);
+     * - check method_id inuse  : isForeignKeyInuse(DBConfig.DB_FIELD_INTERVAL_ID, 4);
+     * 
+     * @param m_foreign_key
+     * @param m_country_id
+     * @return 
+     */
+    
+    public static boolean isForeignKeyInuse(String m_foreign_key, int m_country_id) {
+        boolean isInuse = false;
+        ArrayList list = new ArrayList();
+        
+        try {
+            DBUtil db = new DBUtil();
+            Connection conn = db.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+            String sql = "";
+            sql += "SELECT * FROM " + DBConfig.DB_TBL_RECIPE + " a ";
+            sql += "WHERE 1=1 ";
+            sql += "    AND " + m_foreign_key + " = " + m_country_id;
+            sql += ";"; //System.out.println("sql: " + sql);
+            
+            rs = stmt.executeQuery(sql);
+            if(rs != null) {
+                while(rs.next()) {
+                    list.add(new Object());
+                }
+            }
+            
+            db.closeConnection(stmt, rs, conn);
+                
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        if(list.size()>0) isInuse = true;
+        return isInuse;
+    }
 
     /**
      * @return the recipe_id
@@ -361,6 +405,11 @@ public class Recipe {
         
         // test: deleteRecipe(int m_recipe_id)
         //deleteRecipe(4);
+        
+        // test: isForeignKeyInuse()
+        System.out.println("Country id inuse: " + isForeignKeyInuse(DBConfig.DB_FIELD_COUNTRY_ID, 2));
+        System.out.println("Method id inuse: " + isForeignKeyInuse(DBConfig.DB_FIELD_METHOD_ID, 3));
+        System.out.println("Interval id inuse: " + isForeignKeyInuse(DBConfig.DB_FIELD_INTERVAL_ID, 4));
     }
     
     // for checking
