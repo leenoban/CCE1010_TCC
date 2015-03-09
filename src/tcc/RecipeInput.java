@@ -248,7 +248,7 @@ public class RecipeInput extends JDialog implements ActionListener {
 
     }
 public  void update(){
-      if (mode.equals(Constants.MODE_CREATE)) {
+      
                 
                 Recipe r = new Recipe();
 
@@ -302,7 +302,7 @@ public  void update(){
                 updateRecipe(r);
                 
                 }   
-    }
+    
                 
                 
     }
