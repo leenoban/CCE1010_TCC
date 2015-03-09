@@ -243,7 +243,7 @@ public class Recipe {
      * @return 
      */
     
-    public static boolean isForeignKeyInuse(String m_foreign_key, int m_country_id) {
+    public static boolean isForeignKeyInuse(String m_foreign_key, int m_fk_id) {
         boolean isInuse = false;
         ArrayList list = new ArrayList();
         
@@ -255,7 +255,7 @@ public class Recipe {
             String sql = "";
             sql += "SELECT * FROM " + DBConfig.DB_TBL_RECIPE + " a ";
             sql += "WHERE 1=1 ";
-            sql += "    AND " + m_foreign_key + " = " + m_country_id;
+            sql += "    AND " + m_foreign_key + " = " + m_fk_id;
             sql += ";"; //System.out.println("sql: " + sql);
             
             rs = stmt.executeQuery(sql);
