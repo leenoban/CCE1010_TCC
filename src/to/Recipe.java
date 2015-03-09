@@ -239,11 +239,11 @@ public class Recipe {
      * - check method_id inuse  : isForeignKeyInuse(DBConfig.DB_FIELD_INTERVAL_ID, 4);
      * 
      * @param m_foreign_key
-     * @param m_country_id
+     * @param m_foreign_key_value
      * @return 
      */
     
-    public static boolean isForeignKeyInuse(String m_foreign_key, int m_fk_id) {
+    public static boolean isForeignKeyInuse(String m_foreign_key, int m_foreign_key_value) {
         boolean isInuse = false;
         ArrayList list = new ArrayList();
         
@@ -255,7 +255,7 @@ public class Recipe {
             String sql = "";
             sql += "SELECT * FROM " + DBConfig.DB_TBL_RECIPE + " a ";
             sql += "WHERE 1=1 ";
-            sql += "    AND " + m_foreign_key + " = " + m_fk_id;
+            sql += "    AND " + m_foreign_key + " = " + m_foreign_key_value;
             sql += ";"; //System.out.println("sql: " + sql);
             
             rs = stmt.executeQuery(sql);
