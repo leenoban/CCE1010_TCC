@@ -271,17 +271,17 @@ public  void update(){
             
                 int setCountryID = cboCountry.getSelectedIndex();
                 setCountryID = setCountryID +1;
-                c.setCountry_id(setCountryID);  // testing only need change
+                c.setCountry_id(setCountryID);  
                 r.setCountry(c);
                 
                 int setMethodID = cboCookingMethod.getSelectedIndex();
                 setMethodID = setMethodID +1;
-                m.setMethod_id(setMethodID);   // testing only need change
+                m.setMethod_id(setMethodID);   
                 r.setMethod(m);
                 
                 int setIntervalID = cboTimeRequire.getSelectedIndex();
                 setIntervalID = setIntervalID +1;
-                i.setInterval_id(setIntervalID);  // testin only need change
+                i.setInterval_id(setIntervalID);  
                 r.setInterval(i);
 
                 if (radio1.isSelected()) {
