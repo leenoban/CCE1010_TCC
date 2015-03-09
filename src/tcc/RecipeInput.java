@@ -247,61 +247,6 @@ public class RecipeInput extends JDialog implements ActionListener {
 
     }
 
-    /*public void update() {
-
-        Recipe r = new Recipe();
-
-        to.Country c = new to.Country();
-        to.Method m = new to.Method();
-        to.Interval i = new to.Interval();
-
-        String txtR = txtRecipeName.getText();
-        String txtM = txtMaterial.getText();
-        String txtS = txtStep.getText();
-
-        r.setRecipe_id(chkRecipeID);
-        if (txtR.equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter a Recipe Name", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-
-            r.setRecipe_name(txtR);
-
-            int setCountryID = cboCountry.getSelectedIndex();
-            setCountryID = setCountryID + 1;
-            c.setCountry_id(setCountryID);
-            r.setCountry(c);
-
-            int setMethodID = cboCookingMethod.getSelectedIndex();
-            setMethodID = setMethodID + 1;
-            m.setMethod_id(setMethodID);
-            r.setMethod(m);
-
-            int setIntervalID = cboTimeRequire.getSelectedIndex();
-            setIntervalID = setIntervalID + 1;
-            i.setInterval_id(setIntervalID);
-            r.setInterval(i);
-
-            if (radio1.isSelected()) {
-                r.setLevel(1);
-            } else if (radio2.isSelected()) {
-                r.setLevel(2);
-            } else if (radio3.isSelected()) {
-                r.setLevel(3);
-            } else if (radio4.isSelected()) {
-                r.setLevel(4);
-            } else if (radio5.isSelected()) {
-                r.setLevel(5);
-            }
-
-            r.setMaterial(txtM);
-            r.setSteps(txtS);
-
-            updateRecipe(r);
-
-        }
-
-    }*/
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
