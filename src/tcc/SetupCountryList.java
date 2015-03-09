@@ -40,7 +40,7 @@ public class SetupCountryList extends JDialog implements ActionListener {
     // create mode
     private void showCountryInputFrame() {
         // TODO: Benny :: Roy - call the country input frame
-        SetupCountryInput countryInput = new SetupCountryInput();
+        SetupCountryInput countryInput = new SetupCountryInput(this);
         countryInput.setLocationRelativeTo(null);
         countryInput.setVisible(true);
 

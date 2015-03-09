@@ -41,7 +41,7 @@ public class SetupMethodList extends JDialog implements ActionListener {
     // create mode
     private void showMethoInputFrame() {
         // TODO: Benny :: Roy - call the method input frame
-        SetupMethodInput methodInput = new SetupMethodInput();
+        SetupMethodInput methodInput = new SetupMethodInput(this);
         methodInput.setLocationRelativeTo(null);
         methodInput.setVisible(true);
         

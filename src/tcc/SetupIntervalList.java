@@ -40,7 +40,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
     // create mode
     private void showIntervalInputFrame() {
         // TODO: Benny :: Roy - call the interval input frame
-        SetupIntervalInput intervalInput = new SetupIntervalInput();
+        SetupIntervalInput intervalInput = new SetupIntervalInput(this);
         intervalInput.setLocationRelativeTo(null);
         intervalInput.setVisible(true);
         

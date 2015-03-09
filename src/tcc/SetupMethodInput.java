@@ -18,8 +18,10 @@ public class SetupMethodInput extends JDialog implements ActionListener {
     
     private SetupMethodList parent;
     private String mode;
+    private int method_id;
     
-    public SetupMethodInput() {
+    public SetupMethodInput(SetupMethodList m_parent) {
+        this.parent = m_parent;
         this.mode = Constants.MODE_CREATE;
         buildGUI();
     }
@@ -27,6 +29,7 @@ public class SetupMethodInput extends JDialog implements ActionListener {
     public SetupMethodInput(Method m_method, SetupMethodList m_parent) {
         this.parent = m_parent;
         this.mode = Constants.MODE_MODIFY;
+        this.method_id = m_method.getMethod_id();
         buildGUI();
         fillData(m_method);
     }
@@ -59,7 +62,7 @@ public class SetupMethodInput extends JDialog implements ActionListener {
     }
     
     public static void main(String args[]) {
-        SetupMethodInput sri = new SetupMethodInput();
+        SetupMethodInput sri = new SetupMethodInput(new SetupMethodList());
         sri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sri.setLocationRelativeTo(null);
         sri.setVisible(true);

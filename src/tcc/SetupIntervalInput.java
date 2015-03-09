@@ -18,8 +18,10 @@ public class SetupIntervalInput extends JDialog implements ActionListener {
 
     private SetupIntervalList parent;
     private String mode;
+    private int interval_id;
     
-    public SetupIntervalInput() {
+    public SetupIntervalInput(SetupIntervalList m_parent) {
+        this.parent = m_parent;
         this.mode = Constants.MODE_CREATE;
         buildGUI();
     }
@@ -27,6 +29,7 @@ public class SetupIntervalInput extends JDialog implements ActionListener {
     public SetupIntervalInput(Interval m_interval, SetupIntervalList m_parent) {
         this.parent = m_parent;
         this.mode = Constants.MODE_MODIFY;
+        this.interval_id = m_interval.getInterval_id();
         buildGUI();
         fillData(m_interval);
     }
@@ -60,7 +63,7 @@ public class SetupIntervalInput extends JDialog implements ActionListener {
     }
     
     public static void main(String args[]) {
-        SetupIntervalInput sri = new SetupIntervalInput();
+        SetupIntervalInput sri = new SetupIntervalInput(new SetupIntervalList());
         sri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sri.setLocationRelativeTo(null);
         sri.setVisible(true);
