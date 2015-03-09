@@ -12,6 +12,7 @@ import to.Recipe;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -106,7 +108,24 @@ public class RecipeInput extends JDialog implements ActionListener {
         panelRight.add(cboCountry);
         panelRight.add(cboCookingMethod);
         panelRight.add(cboTimeRequire);
-
+           
+        ArrayList list = to.Country.getCountryList();
+        for(int i=0; i<list.size(); i++) {
+            to.Country c = (to.Country)list.get(i);
+            cboCountry.addItem(c.getCountry_name());
+        }
+        
+        ArrayList mlist = to.Method.getMethodList();
+        for(int i=0; i<mlist.size(); i++) {
+            to.Method m = (to.Method)mlist.get(i);
+            cboCookingMethod.addItem(m.getMethod_name());
+        }
+        
+        ArrayList IntervalList = to.Interval.getIntervalList();
+        for(int i=0; i<IntervalList.size(); i++) {
+            to.Interval t = (to.Interval)IntervalList.get(i);
+            cboTimeRequire.addItem(t.getInterval());
+        }
             //Tab 1 - panel to hold radio button with different layout  
         panelRadioButton.setLayout(new FlowLayout(FlowLayout.LEFT));
         radioButtonGroup.add(radio5);
@@ -119,7 +138,8 @@ public class RecipeInput extends JDialog implements ActionListener {
         panelRadioButton.add(radio3);
         panelRadioButton.add(radio2);
         panelRadioButton.add(radio1);
-
+        radio1.setSelected(true);
+        
         //create a layout to hold the label,combox,textfield and radio button panel for Tab1
         panelOne.setLayout(new GridLayout(1, 1));
         panelOne.add(panelLeft);
@@ -155,6 +175,7 @@ public class RecipeInput extends JDialog implements ActionListener {
         //Panel to hold the tabs and button
         add(tbd1, BorderLayout.NORTH);
         add(panelButton, BorderLayout.SOUTH);
+        
         //Joe new add    
 
         this.setModal(true);
@@ -226,23 +247,9 @@ public class RecipeInput extends JDialog implements ActionListener {
         ri.setVisible(true);
 
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        // joe new add
-        Object obj = e.getSource();
-        if (obj == btnCancel) {
-
-            cancel();
-        } else if (obj == btnSave) {
-                    //Add
-            //updateRecipe(Recipe.getRecipe(2));
-            if (mode.equals(Constants.MODE_CREATE)) {
-                updateRecipe(Recipe.getRecipe(2));
-            } //Modify Recipe
-            else if (mode.equals(Constants.MODE_MODIFY)) {
-
+public  void update(){
+      if (mode.equals(Constants.MODE_CREATE)) {
+                
                 Recipe r = new Recipe();
 
                 to.Country c = new to.Country();
@@ -254,15 +261,27 @@ public class RecipeInput extends JDialog implements ActionListener {
                 String txtS = txtStep.getText();
 
                 r.setRecipe_id(chkRecipeID);
+                if ( txtR.equals(""))
+                        {
+                            JOptionPane.showMessageDialog(null, "Please enter a Recipe Name","Error",JOptionPane.ERROR_MESSAGE);
+                        }
+                else {
+                
                 r.setRecipe_name(txtR);
-
-                c.setCountry_id(1);
+            
+                int setCountryID = cboCountry.getSelectedIndex();
+                setCountryID = setCountryID +1;
+                c.setCountry_id(setCountryID);  // testing only need change
                 r.setCountry(c);
-
-                m.setMethod_id(1);
+                
+                int setMethodID = cboCookingMethod.getSelectedIndex();
+                setMethodID = setMethodID +1;
+                m.setMethod_id(setMethodID);   // testing only need change
                 r.setMethod(m);
-
-                i.setInterval_id(3);
+                
+                int setIntervalID = cboTimeRequire.getSelectedIndex();
+                setIntervalID = setIntervalID +1;
+                i.setInterval_id(setIntervalID);  // testin only need change
                 r.setInterval(i);
 
                 if (radio1.isSelected()) {
@@ -281,11 +300,31 @@ public class RecipeInput extends JDialog implements ActionListener {
                 r.setSteps(txtS);
 
                 updateRecipe(r);
-
-                setVisible(false);
-            }
-        }
-
+                
+                }   
     }
+                
+                
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        // joe new add
+        Object obj = e.getSource();
+        if (obj == btnCancel) {
+
+            cancel();
+        } else if (obj == btnSave) {
+                    //Add
+            
+            if (mode.equals(Constants.MODE_CREATE)) {
+                update();
+            } //Modify Recipe
+            else if (mode.equals(Constants.MODE_MODIFY)) {
+            update();
+
+            }
         //Joe new add
+        }
+    }
 }
