@@ -113,8 +113,8 @@ public class SetupCountryInput extends JDialog implements ActionListener {
         } else if (obj == jbtConfirm) {
             if (jtfInput.getText().equals("")) {
                 JOptionPane.showMessageDialog(null,
-                        "Please enter a country name!",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                    "Please enter a country name!",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 Country c = new Country();
                 c.setCountry_id(this.country_id);
