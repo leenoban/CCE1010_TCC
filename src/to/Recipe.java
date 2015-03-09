@@ -253,9 +253,8 @@ public class Recipe {
             Statement stmt = conn.createStatement();
             ResultSet rs;
             String sql = "";
-            sql += "SELECT * FROM " + DBConfig.DB_TBL_RECIPE + " a ";
-            sql += "WHERE 1=1 ";
-            sql += "    AND " + m_foreign_key + " = " + m_foreign_key_value;
+            sql += "SELECT * FROM " + DBConfig.DB_TBL_RECIPE;
+            sql += " WHERE 1=1 AND " + m_foreign_key + " = " + m_foreign_key_value;
             sql += ";"; //System.out.println("sql: " + sql);
             
             rs = stmt.executeQuery(sql);
