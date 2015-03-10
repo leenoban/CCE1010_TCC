@@ -124,8 +124,10 @@ public class RecipeInput extends JDialog implements ActionListener {
         ArrayList IntervalList = to.Interval.getIntervalList();
         for (int i = 0; i < IntervalList.size(); i++) {
             to.Interval t = (to.Interval) IntervalList.get(i);
-            cboTimeRequire.addItem(t.getInterval());
+            String combineIntUnit = Integer.toString(t.getInterval()) +" " + t.getUnit();
+            cboTimeRequire.addItem(combineIntUnit);
         }
+
         //Tab 1 - panel to hold radio button with different layout  
         panelRadioButton.setLayout(new FlowLayout(FlowLayout.LEFT));
         radioButtonGroup.add(radio5);
@@ -195,8 +197,9 @@ public class RecipeInput extends JDialog implements ActionListener {
         txtRecipeName.setText(r.getRecipe_name());
         cboCountry.addItem(r.getCountry().getCountry_name());
         cboCookingMethod.addItem(r.getMethod().getMethod_name());
-        cboTimeRequire.addItem(r.getInterval().getInterval());
-
+        String IntervalUnit = r.getInterval().getInterval() + " " + r.getInterval().getUnit();
+        cboTimeRequire.addItem(IntervalUnit);
+        
         switch (chkLevel) {
             case 5:
                 radio5.setSelected(true);
