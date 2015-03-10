@@ -3,6 +3,8 @@ package tcc;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.*;
@@ -10,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import to.Country;
+import to.Recipe;
+import utils.DBConfig;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -35,6 +39,7 @@ public class SetupCountryList extends JDialog implements ActionListener {
 
     public SetupCountryList() {
         buildGUI();
+        this.addListenerToObject();
     }
 
     // create mode
@@ -75,6 +80,9 @@ public class SetupCountryList extends JDialog implements ActionListener {
         jbtModify.addActionListener(this);
         jbtDelete.addActionListener(this);
         jbtCancel.addActionListener(this);
+        
+        
+        
 
         //Create EmptyBorder
         EmptyBorder emptyBorder = new EmptyBorder(10, 10, 10, 10);
@@ -155,23 +163,56 @@ public class SetupCountryList extends JDialog implements ActionListener {
             if (getTableCheckedCount() < 1) {
                 JOptionPane.showMessageDialog(this, Constants.NO_ITEM_SELECTED);
             } else {
-                // get selected item
+                 // get selected item
                 ArrayList list = new ArrayList();
                 for (int i = 0; i < countryTable.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean) countryTable.getModel().getValueAt(i, 0);
                     if (checked) {
                         Country c = new Country();
                         c.setCountry_id((int) countryTable.getModel().getValueAt(i, 1));
-                        list.add(c);
+                        String country_Name = (String)countryTable.getModel().getValueAt(i, 2);
+                        int countryID = c.getCountry_id(); //new
+                        boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_COUNTRY_ID, countryID); //new
+                        if (isForeignKeyInuse){ //new "if" statement
+                           JOptionPane.showMessageDialog(this, "Country " + "\"" + country_Name + "\"" + " is using recently, cannot be deleted");
+                        }
+                            else { //new
+                                list.add(c);
+                            }
                     }
                 }
-                deleteCountries(list);
+                if (list.size() > 0) //new
+                    deleteCountries(list);
 
             }
         } else if (e.getSource() == jbtCancel) {
             cancel();
         }
-    } //actionPerform  
+    } //actionPerform
+    
+    private void addListenerToObject(){
+        
+        countryTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable)e.getSource();
+                    int selectedRowIndex = target.getSelectedRow();
+                    //int selectedColumnIndex = target.getSelectedColumn(); //System.out.println("selected: (" + selectedRowIndex + "),(" + selectedColumnIndex + ")");
+                    //Object selectedObject = (Object) tbl_recipe.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+                    int country_id = Integer.parseInt(((Object)countryTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
+                    
+                    if(country_id!=-1) {
+                        Country country = new Country();
+                        country.setCountry_id(country_id);
+                        showCountryInputFrame(country);
+                    }
+                }
+            }
+        });
+        
+    }
+    
 
     public void refreshCountryList(ArrayList c_list) { //System.out.println("c_list.size(): " + c_list.size());
 

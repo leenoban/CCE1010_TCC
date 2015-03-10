@@ -8,6 +8,8 @@ package tcc;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.*;
@@ -15,6 +17,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import to.Interval;
+import to.Recipe;
+import utils.DBConfig;
 
 /**
  *
@@ -35,6 +39,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
     
     public SetupIntervalList() {
         buildGUI();
+        this.addListenerToObject();
     }
     
     // create mode
@@ -157,22 +162,54 @@ public class SetupIntervalList extends JDialog implements ActionListener {
             if (getTableCheckedCount() < 1) {
                 JOptionPane.showMessageDialog(this, Constants.NO_ITEM_SELECTED);
             } else {
-                // get selected item
+                 // get selected item
                 ArrayList list = new ArrayList();
                 for (int i = 0; i < intervalTable.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean) intervalTable.getModel().getValueAt(i, 0);
                     if (checked) {
                         Interval in = new Interval();
                         in.setInterval_id((int) intervalTable.getModel().getValueAt(i, 1));
-                        list.add(in);
+                        int time_Interval = (int)intervalTable.getModel().getValueAt(i, 2);
+                        int intervalID = in.getInterval_id(); //new
+                        boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_INTERVAL_ID, intervalID); //new
+                        if (isForeignKeyInuse){ //new "if" statement
+                           JOptionPane.showMessageDialog(this, "Time Interval " + "\"" + time_Interval + "\"" + " is using recently, cannot be deleted");
+                        }
+                            else { //new
+                                list.add(in);
+                            }
                     }
                 }
-                deleteIntervals(list);
+                if (list.size() > 0) //new
+                    deleteIntervals(list);
 
             }
         } else if (e.getSource() == jbtCancel) {
             cancel();
         }
+        
+    }
+    
+     private void addListenerToObject(){
+        
+        intervalTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable)e.getSource();
+                    int selectedRowIndex = target.getSelectedRow();
+                    //int selectedColumnIndex = target.getSelectedColumn(); //System.out.println("selected: (" + selectedRowIndex + "),(" + selectedColumnIndex + ")");
+                    //Object selectedObject = (Object) tbl_recipe.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+                    int interval_id = Integer.parseInt(((Object)intervalTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
+                    
+                    if(interval_id!=-1) {
+                        Interval interval = new Interval();
+                        interval.setInterval_id(interval_id);
+                        showIntervalInputFrame(interval);
+                    }
+                }
+            }
+        });
         
     }
     

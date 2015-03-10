@@ -9,6 +9,8 @@ package tcc;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.*;
@@ -16,6 +18,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import to.Method;
+import to.Recipe;
+import utils.DBConfig;
 
 /**
  *
@@ -36,6 +40,7 @@ public class SetupMethodList extends JDialog implements ActionListener {
     
     public SetupMethodList() {
         buildGUI();
+        this.addListenerToObject();
     }
     
     // create mode
@@ -158,26 +163,57 @@ public class SetupMethodList extends JDialog implements ActionListener {
             if (getTableCheckedCount() < 1) {
                 JOptionPane.showMessageDialog(this, Constants.NO_ITEM_SELECTED);
             } else {
-                // get selected item
+                 // get selected item
                 ArrayList list = new ArrayList();
                 for (int i = 0; i < methodTable.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean) methodTable.getModel().getValueAt(i, 0);
                     if (checked) {
                         Method m = new Method();
                         m.setMethod_id((int) methodTable.getModel().getValueAt(i, 1));
-                        list.add(m);
+                        String method_Name = (String)methodTable.getModel().getValueAt(i, 2);
+                        int methodID = m.getMethod_id(); //new
+                        boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_METHOD_ID, methodID); //new
+                        if (isForeignKeyInuse){ //new "if" statement
+                           JOptionPane.showMessageDialog(this, "Method " + "\"" + method_Name + "\"" + " is using recently, cannot be deleted");
+                        }
+                            else { //new
+                                list.add(m);
+                            }
                     }
                 }
-                deleteMethods(list);
+                if (list.size() > 0) //new
+                    deleteMethods(list);
 
             }
         } else if (e.getSource() == jbtCancel) {
             cancel();
         }
     } //actionPerform  
-
+    
         
- 
+     private void addListenerToObject(){
+        
+        methodTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable)e.getSource();
+                    int selectedRowIndex = target.getSelectedRow();
+                    //int selectedColumnIndex = target.getSelectedColumn(); //System.out.println("selected: (" + selectedRowIndex + "),(" + selectedColumnIndex + ")");
+                    //Object selectedObject = (Object) tbl_recipe.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+                    int method_id = Integer.parseInt(((Object)methodTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
+                    
+                    if(method_id!=-1) {
+                        Method method = new Method();
+                        method.setMethod_id(method_id);
+                        showMethoInputFrame(method);
+                    }
+                }
+            }
+        });
+        
+    }
+    
 
     
     public void refreshMethodList(ArrayList c_list) { //System.out.println("c_list.size(): " + c_list.size());
