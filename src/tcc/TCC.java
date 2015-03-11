@@ -50,6 +50,7 @@ public class TCC extends JFrame implements ActionListener {
     private JButton btn_search = new JButton(Constants.LBL_BTN_SEARCH);
     private JPanel pl_top_right = new JPanel();
     private JLabel lbl_count = new JLabel();
+    private int current_count = 0;
     
     private JPanel pl_middle = new JPanel();
     private JPanel pl_middle_center = new JPanel();
@@ -207,9 +208,11 @@ public class TCC extends JFrame implements ActionListener {
                 tbl_data[i][6] = ic;
             }
             model = new TccTableModel(TccTableModel.TBL_RECIPE, tbl_data);
+            current_count = m_list.size();
             
         } else {
             model = new TccTableModel(TccTableModel.TBL_RECIPE, TccTableModel.NO_REC_FOUND_RECIPE);
+            current_count = m_list.size();
             tbl_recipe.setModel(model);
         }
         
@@ -247,7 +250,11 @@ public class TCC extends JFrame implements ActionListener {
         }
         
         // refresh counter label
-        lbl_count.setText("Total " + Recipe.getRecipeList().size() + " piece(s)");
+        updateCountMessage();
+    }
+    
+    private void updateCountMessage() {
+        lbl_count.setText("Display Result: " + current_count + " of " + Recipe.getRecipeList().size() + " Record(s)");
     }
     
     // create mode
@@ -297,17 +304,20 @@ public class TCC extends JFrame implements ActionListener {
     
     private void deleteRecipes(ArrayList m_list) {
         
-        int n = JOptionPane.showConfirmDialog(this, Constants.CONFIRM_DELETE_ITEM, Constants.TITLE_CONFIRM_DELETE, JOptionPane.YES_NO_OPTION);
-        if(n==JOptionPane.YES_OPTION) {
-            for(int i=0; i<m_list.size(); i++) {
-            int recipe_id = ((Recipe)m_list.get(i)).getRecipe_id();
-                //System.out.println("delete recipe_id: " + recipe_id);
-                Recipe.deleteRecipe(recipe_id);
-            }
-        }
+        if((int)tbl_recipe.getModel().getValueAt(0, 1)!=-1) {
         
-        // refresh table
-        refreshRecipeList(Recipe.getRecipeList());
+            int n = JOptionPane.showConfirmDialog(this, Constants.CONFIRM_DELETE_ITEM, Constants.TITLE_CONFIRM_DELETE, JOptionPane.YES_NO_OPTION);
+            if(n==JOptionPane.YES_OPTION) {
+                for(int i=0; i<m_list.size(); i++) {
+                int recipe_id = ((Recipe)m_list.get(i)).getRecipe_id();
+                    //System.out.println("delete recipe_id: " + recipe_id);
+                    Recipe.deleteRecipe(recipe_id);
+                }
+            }
+
+            // refresh table
+            refreshRecipeList(Recipe.getRecipeList());
+        }
     }
     
     private void exitTCC() {
@@ -322,6 +332,7 @@ public class TCC extends JFrame implements ActionListener {
         TCC tcc = new TCC();
         tcc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tcc.setLocationRelativeTo(null);
+        tcc.setResizable(false);
         tcc.setVisible(true);
     }
 
@@ -345,9 +356,11 @@ public class TCC extends JFrame implements ActionListener {
                         r.setRecipe_id((int)tbl_recipe.getModel().getValueAt(i, 1));
                     }
                 }
-                RecipeInput ri = new RecipeInput(r, this);
-                ri.setLocationRelativeTo(null);
-                ri.setVisible(true);
+                if(r.getRecipe_id() != -1) {
+                    RecipeInput ri = new RecipeInput(r, this);
+                    ri.setLocationRelativeTo(null);
+                    ri.setVisible(true);
+                }
             }
         } else if(obj==btn_delete) {
             if(getTableCheckedCount()<1) {
