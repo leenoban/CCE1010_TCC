@@ -135,8 +135,7 @@ public class SetupCountryList extends JDialog implements ActionListener {
 
         this.setModal(true);
         this.setTitle(Constants.TITLE_COUNTRY);
-        //this.setSize(800, 600);
-        //pack();
+        this.setResizable(false);
         this.pack();
     }
 

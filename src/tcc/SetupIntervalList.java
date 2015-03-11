@@ -88,7 +88,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
         EmptyBorder emptyBorder = new EmptyBorder(10, 10, 10, 10);
 
         // Panel#1 hosts button of "Add', "Modify", "Delete"  
-        p1.setSize(200, 50);
+        //p1.setSize(200, 50);
         p1.setLayout(new GridLayout(5, 1, 0, 10));
         p1.add(jbtAdd);
         p1.add(jbtModify);
@@ -110,6 +110,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
         intervalTable.setFillsViewportHeight(true);
         
         // Panel#2 hosts button of "Cancel" 
+        //p2.setSize(200, 50); //Test
         p2.setLayout(new BorderLayout());
         p2.add(jbtCancel, BorderLayout.SOUTH);
         p2.setBorder(emptyBorder);
@@ -134,8 +135,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
         
         this.setModal(true);
         this.setTitle(Constants.TITLE_INTERVAL);
-        //this.setSize(800, 600);
-        //pack();
+        this.setResizable(false);
         this.pack();
     }
 

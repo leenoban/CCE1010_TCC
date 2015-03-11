@@ -134,8 +134,7 @@ public class SetupMethodList extends JDialog implements ActionListener {
         
         this.setModal(true);
         this.setTitle(Constants.TITLE_METHOD);
-        //this.setSize(800, 600);
-        //pack();
+        this.setResizable(false);
         this.pack();
         
     }
