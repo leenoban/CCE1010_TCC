@@ -39,7 +39,7 @@ public class SetupCountryList extends JDialog implements ActionListener {
     TCC parent;
 
     public SetupCountryList(TCC m_parent) {
-        this.parent = parent;
+        this.parent = m_parent;
         buildGUI();
         this.addListenerToObject();
     }
