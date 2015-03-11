@@ -272,7 +272,7 @@ public class TCC extends JFrame implements ActionListener {
         // Angus :: Benny - Call the country list frame
         System.out.println("Show SetupCountryInput ......");
         
-        SetupCountryList scl = new SetupCountryList();
+        SetupCountryList scl = new SetupCountryList(this);
         scl.setLocationRelativeTo(null);
         scl.setVisible(true);
     }
@@ -281,7 +281,7 @@ public class TCC extends JFrame implements ActionListener {
         // Angus :: Benny - Call the method list frame
         System.out.println("Show SetupMethodInput ......");
         
-        SetupMethodList sml = new SetupMethodList();
+        SetupMethodList sml = new SetupMethodList(this);
         sml.setLocationRelativeTo(null);
         sml.setVisible(true);
     }
@@ -290,7 +290,7 @@ public class TCC extends JFrame implements ActionListener {
         // Angus :: Benny - Call the interval list frame
         System.out.println("Show SetupIntervalInput ......");
         
-        SetupIntervalList sil = new SetupIntervalList();
+        SetupIntervalList sil = new SetupIntervalList(this);
         sil.setLocationRelativeTo(null);
         sil.setVisible(true);
     }

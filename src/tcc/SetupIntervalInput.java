@@ -103,7 +103,7 @@ public class SetupIntervalInput extends JDialog implements ActionListener {
     }
     
     public static void main(String args[]) {
-        SetupIntervalInput sri = new SetupIntervalInput(new SetupIntervalList());
+        SetupIntervalInput sri = new SetupIntervalInput(new SetupIntervalList(new TCC()));
         sri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sri.setLocationRelativeTo(null);
         sri.setVisible(true);

@@ -36,8 +36,10 @@ public class SetupIntervalList extends JDialog implements ActionListener {
     JPanel p4 = new JPanel();
     JTable intervalTable;
     TccTableModel model;
+    TCC parent;
     
-    public SetupIntervalList() {
+    public SetupIntervalList(TCC m_parent) {
+        this.parent = m_parent;
         buildGUI();
         this.addListenerToObject();
     }
@@ -62,12 +64,13 @@ public class SetupIntervalList extends JDialog implements ActionListener {
     
     // for cancel button call
     private void cancel() {
+        parent.refreshRecipeList(Recipe.getRecipeList());
         setVisible(false);
         dispose();
     }
     
     public static void main(String args[]) {
-        SetupIntervalList sml = new SetupIntervalList();
+        SetupIntervalList sml = new SetupIntervalList(new TCC());
         sml.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sml.setLocationRelativeTo(null);
         sml.setVisible(true);

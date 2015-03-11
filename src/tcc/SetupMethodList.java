@@ -37,8 +37,10 @@ public class SetupMethodList extends JDialog implements ActionListener {
     JPanel p4 = new JPanel();
     JTable methodTable;
     TccTableModel model;
+    TCC parent;
     
-    public SetupMethodList() {
+    public SetupMethodList(TCC m_parent) {
+        this.parent = m_parent;
         buildGUI();
         this.addListenerToObject();
     }
@@ -62,12 +64,13 @@ public class SetupMethodList extends JDialog implements ActionListener {
     
     // for cancel button call
     private void cancel() {
+        parent.refreshRecipeList(Recipe.getRecipeList());
         setVisible(false);
         dispose();
     }
     
     public static void main(String args[]) {
-        SetupMethodList sml = new SetupMethodList();
+        SetupMethodList sml = new SetupMethodList(new TCC());
         sml.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sml.setLocationRelativeTo(null);
         sml.setVisible(true);

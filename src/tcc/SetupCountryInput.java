@@ -97,7 +97,7 @@ public class SetupCountryInput extends JDialog implements ActionListener {
     }
     
     public static void main(String args[]) {
-        SetupCountryInput sri = new SetupCountryInput(new SetupCountryList());
+        SetupCountryInput sri = new SetupCountryInput(new SetupCountryList(new TCC()));
         sri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sri.setLocationRelativeTo(null);
         sri.setVisible(true);

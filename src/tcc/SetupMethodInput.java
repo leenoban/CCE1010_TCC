@@ -94,7 +94,7 @@ public class SetupMethodInput extends JDialog implements ActionListener {
     }
     
     public static void main(String args[]) {
-        SetupMethodInput sri = new SetupMethodInput(new SetupMethodList());
+        SetupMethodInput sri = new SetupMethodInput(new SetupMethodList(new TCC()));
         sri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         sri.setLocationRelativeTo(null);
         sri.setVisible(true);

@@ -36,8 +36,10 @@ public class SetupCountryList extends JDialog implements ActionListener {
     JPanel p4 = new JPanel();
     JTable countryTable;
     TccTableModel model;
+    TCC parent;
 
-    public SetupCountryList() {
+    public SetupCountryList(TCC m_parent) {
+        this.parent = parent;
         buildGUI();
         this.addListenerToObject();
     }
@@ -62,12 +64,13 @@ public class SetupCountryList extends JDialog implements ActionListener {
 
     // for cancel button call
     private void cancel() {
+        parent.refreshRecipeList(Recipe.getRecipeList());
         setVisible(false);
         dispose();
     }
 
     public static void main(String args[]) {
-        SetupCountryList srl = new SetupCountryList();
+        SetupCountryList srl = new SetupCountryList(new TCC());
         srl.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         srl.setLocationRelativeTo(null);
         srl.setVisible(true);
