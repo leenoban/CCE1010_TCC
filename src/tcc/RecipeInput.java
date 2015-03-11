@@ -183,6 +183,7 @@ public class RecipeInput extends JDialog implements ActionListener {
         this.setModal(true);
         this.setTitle(Constants.TITLE_RECIPE + " - " + this.mode);
         this.setSize(800, 600);
+        this.setResizable(false);
         pack();
     }
 
@@ -287,6 +288,7 @@ public class RecipeInput extends JDialog implements ActionListener {
             // checking if Recipe name is empty
             if (txtR.equals("")) {
                 JOptionPane.showMessageDialog(null, "Please enter a Recipe Name", "Error", JOptionPane.ERROR_MESSAGE);
+                txtRecipeName.requestFocusInWindow();
             } else {
                 
                 //save changes from different field
