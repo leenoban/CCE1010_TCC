@@ -176,7 +176,7 @@ public class SetupCountryList extends JDialog implements ActionListener {
                         int countryID = c.getCountry_id(); //new
                         boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_COUNTRY_ID, countryID); //new
                         if (isForeignKeyInuse){ //new "if" statement
-                           JOptionPane.showMessageDialog(this, "Country " + "\"" + country_Name + "\"" + " is using recently, cannot be deleted");
+                           JOptionPane.showMessageDialog(this, "Country " + "\"" + country_Name + "\"" + " is already in use, cannot be deleted");
                         }
                             else { //new
                                 list.add(c);

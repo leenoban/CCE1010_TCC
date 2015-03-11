@@ -176,7 +176,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
                         int intervalID = in.getInterval_id(); //new
                         boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_INTERVAL_ID, intervalID); //new
                         if (isForeignKeyInuse){ //new "if" statement
-                           JOptionPane.showMessageDialog(this, "Time Interval " + "\"" + time_Interval + "\"" + " is using recently, cannot be deleted");
+                           JOptionPane.showMessageDialog(this, "Time Interval " + "\"" + time_Interval + "\"" + " is already in use, cannot be deleted");
                         }
                             else { //new
                                 list.add(in);

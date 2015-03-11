@@ -176,7 +176,7 @@ public class SetupMethodList extends JDialog implements ActionListener {
                         int methodID = m.getMethod_id(); //new
                         boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_METHOD_ID, methodID); //new
                         if (isForeignKeyInuse){ //new "if" statement
-                           JOptionPane.showMessageDialog(this, "Method " + "\"" + method_Name + "\"" + " is using recently, cannot be deleted");
+                           JOptionPane.showMessageDialog(this, "Method " + "\"" + method_Name + "\"" + " is already in use, cannot be deleted");
                         }
                             else { //new
                                 list.add(m);
