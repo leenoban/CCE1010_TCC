@@ -8,7 +8,7 @@ package tcc;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JDialog;
-import to.Recipe;
+import to.*;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -49,7 +49,7 @@ public class RecipeInput extends JDialog implements ActionListener {
     JButton btnCancel = new JButton("Cancel");
     JButton btnSave = new JButton("Save");
     JLabel lblRecipeName = new JLabel("Recipe Name");
-    JTextField txtRecipeName = new JTextField(8);
+    JTextField txtRecipeName = new JTextField();
     JLabel lblCountry = new JLabel("Country");
     JComboBox cboCountry = new JComboBox();
     JLabel lblCookingMethod = new JLabel("Cooking Method");
@@ -110,21 +110,21 @@ public class RecipeInput extends JDialog implements ActionListener {
         panelRight.add(cboTimeRequire);
         
         //Check the full list item from DB to put on Combo box
-        ArrayList list = to.Country.getCountryList();
+        ArrayList list = Country.getCountryList();
         for (int i = 0; i < list.size(); i++) {
-            to.Country c = (to.Country) list.get(i);
+            Country c = (Country) list.get(i);
             cboCountry.addItem(c.getCountry_name());
         }
 
-        ArrayList mlist = to.Method.getMethodList();
+        ArrayList mlist = Method.getMethodList();
         for (int i = 0; i < mlist.size(); i++) {
-            to.Method m = (to.Method) mlist.get(i);
+            Method m = (Method) mlist.get(i);
             cboCookingMethod.addItem(m.getMethod_name());
         }
 
-        ArrayList IntervalList = to.Interval.getIntervalList();
+        ArrayList IntervalList = Interval.getIntervalList();
         for (int i = 0; i < IntervalList.size(); i++) {
-            to.Interval t = (to.Interval) IntervalList.get(i);
+            Interval t = (Interval) IntervalList.get(i);
             String combineIntUnit = Integer.toString(t.getInterval()) + " " + t.getUnit();
             cboTimeRequire.addItem(combineIntUnit);
         }
@@ -233,7 +233,7 @@ public class RecipeInput extends JDialog implements ActionListener {
         //put the selected item Material / Step on the text field
         txtMaterial.setText(r.getMaterial());
         txtStep.setText(r.getSteps());
-       
+        txtRecipeName.setCaretPosition(0);
     }
 
     // Update DB record - for save button call
@@ -275,9 +275,9 @@ public class RecipeInput extends JDialog implements ActionListener {
             
             Recipe r = new Recipe();
 
-            to.Country c = new to.Country();
-            to.Method m = new to.Method();
-            to.Interval i = new to.Interval();
+            Country c = new Country();
+            Method m = new Method();
+            Interval i = new Interval();
             
             String txtR = txtRecipeName.getText();
             String txtM = txtMaterial.getText();
