@@ -49,8 +49,8 @@ public class SetupCountryList extends JDialog implements ActionListener {
         // TODO: Benny :: Roy - call the country input frame
         SetupCountryInput countryInput = new SetupCountryInput(this);
         countryInput.setLocationRelativeTo(null);
+        countryInput.setResizable(false);
         countryInput.setVisible(true);
-
     }
 
     // edit mode
@@ -58,8 +58,8 @@ public class SetupCountryList extends JDialog implements ActionListener {
         // TODO: Benny :: Roy - call the country input frame
         SetupCountryInput countryModify = new SetupCountryInput(m_country, this);
         countryModify.setLocationRelativeTo(null);
+        countryModify.setResizable(false);
         countryModify.setVisible(true);
-
     }
 
     // for cancel button call
@@ -71,7 +71,11 @@ public class SetupCountryList extends JDialog implements ActionListener {
 
     public static void main(String args[]) {
         SetupCountryList srl = new SetupCountryList(new TCC());
-        srl.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        srl.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
         srl.setLocationRelativeTo(null);
         srl.setVisible(true);
     }
@@ -83,9 +87,6 @@ public class SetupCountryList extends JDialog implements ActionListener {
         jbtModify.addActionListener(this);
         jbtDelete.addActionListener(this);
         jbtCancel.addActionListener(this);
-        
-        
-        
 
         //Create EmptyBorder
         EmptyBorder emptyBorder = new EmptyBorder(10, 10, 10, 10);
@@ -165,46 +166,47 @@ public class SetupCountryList extends JDialog implements ActionListener {
             if (getTableCheckedCount() < 1) {
                 JOptionPane.showMessageDialog(this, Constants.NO_ITEM_SELECTED);
             } else {
-                 // get selected item
+                // get selected item
                 ArrayList list = new ArrayList();
                 for (int i = 0; i < countryTable.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean) countryTable.getModel().getValueAt(i, 0);
                     if (checked) {
                         Country c = new Country();
                         c.setCountry_id((int) countryTable.getModel().getValueAt(i, 1));
-                        String country_Name = (String)countryTable.getModel().getValueAt(i, 2);
+                        String country_Name = (String) countryTable.getModel().getValueAt(i, 2);
                         int countryID = c.getCountry_id(); //new
                         boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_COUNTRY_ID, countryID); //new
-                        if (isForeignKeyInuse){ //new "if" statement
-                           JOptionPane.showMessageDialog(this, "Country " + "\"" + country_Name + "\"" + " is already in use, cannot be deleted");
+                        if (isForeignKeyInuse) { //new "if" statement
+                            JOptionPane.showMessageDialog(this, "Country " + "\"" + country_Name + "\"" + " is already in use, cannot be deleted");
+                        } else { //new
+                            list.add(c);
                         }
-                            else { //new
-                                list.add(c);
-                            }
                     }
                 }
                 if (list.size() > 0) //new
+                {
                     deleteCountries(list);
+                }
 
             }
         } else if (e.getSource() == jbtCancel) {
             cancel();
         }
     } //actionPerform
-    
-    private void addListenerToObject(){
-        
+
+    private void addListenerToObject() {
+
         countryTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    JTable target = (JTable)e.getSource();
+                    JTable target = (JTable) e.getSource();
                     int selectedRowIndex = target.getSelectedRow();
                     //int selectedColumnIndex = target.getSelectedColumn(); //System.out.println("selected: (" + selectedRowIndex + "),(" + selectedColumnIndex + ")");
                     //Object selectedObject = (Object) tbl_recipe.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-                    int country_id = Integer.parseInt(((Object)countryTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
-                    
-                    if(country_id!=-1) {
+                    int country_id = Integer.parseInt(((Object) countryTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
+
+                    if (country_id != -1) {
                         Country country = new Country();
                         country.setCountry_id(country_id);
                         showCountryInputFrame(country);
@@ -212,9 +214,8 @@ public class SetupCountryList extends JDialog implements ActionListener {
                 }
             }
         });
-        
+
     }
-    
 
     public void refreshCountryList(ArrayList c_list) { //System.out.println("c_list.size(): " + c_list.size());
 

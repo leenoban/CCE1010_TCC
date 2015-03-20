@@ -5,7 +5,6 @@
  */
 package tcc;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -26,7 +25,7 @@ import utils.DBConfig;
  * @author AngusLipsey
  */
 public class SetupMethodList extends JDialog implements ActionListener {
-    
+
     JButton jbtAdd = new JButton(Constants.LBL_BTN_ADD);
     JButton jbtModify = new JButton(Constants.LBL_BTN_MODIFY);
     JButton jbtDelete = new JButton(Constants.LBL_BTN_DELETE);
@@ -38,22 +37,22 @@ public class SetupMethodList extends JDialog implements ActionListener {
     JTable methodTable;
     TccTableModel model;
     TCC parent;
-    
+
     public SetupMethodList(TCC m_parent) {
         this.parent = m_parent;
         buildGUI();
         this.addListenerToObject();
     }
-    
+
     // create mode
     private void showMethoInputFrame() {
         // TODO: Benny :: Roy - call the method input frame
         SetupMethodInput methodInput = new SetupMethodInput(this);
         methodInput.setLocationRelativeTo(null);
         methodInput.setVisible(true);
-        
+
     }
-    
+
     // edit mode
     private void showMethoInputFrame(Method m_method) {
         // TODO: Benny :: Roy - call the method input frame
@@ -61,29 +60,33 @@ public class SetupMethodList extends JDialog implements ActionListener {
         methodModify.setLocationRelativeTo(null);
         methodModify.setVisible(true);
     }
-    
+
     // for cancel button call
     private void cancel() {
         parent.refreshRecipeList(Recipe.getRecipeList());
         setVisible(false);
         dispose();
     }
-    
+
     public static void main(String args[]) {
         SetupMethodList sml = new SetupMethodList(new TCC());
-        sml.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        sml.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
         sml.setLocationRelativeTo(null);
         sml.setVisible(true);
     }
-    
+
     private void buildGUI() {
         // TODO: Benny - build GUI
-        
+
         jbtAdd.addActionListener(this);
         jbtModify.addActionListener(this);
         jbtDelete.addActionListener(this);
         jbtCancel.addActionListener(this);
-        
+
         //Create EmptyBorder
         EmptyBorder emptyBorder = new EmptyBorder(10, 10, 10, 10);
 
@@ -94,21 +97,21 @@ public class SetupMethodList extends JDialog implements ActionListener {
         p1.add(jbtModify);
         p1.add(jbtDelete);
         p1.setBorder(emptyBorder);
-        
-         // Create JTable
+
+        // Create JTable
         methodTable = new JTable();
         methodTable.setGridColor(Color.LIGHT_GRAY);
 
         refreshMethodList(Method.getMethodList());
-        
+
         methodTable.setAutoCreateRowSorter(true);
-        
-         // Create ScrollPane
+
+        // Create ScrollPane
         JScrollPane scrollPane = new JScrollPane(methodTable);
         scrollPane.setPreferredSize(new Dimension(200, 5));
         //scrollPane.setBorder(emptyBorder);
         methodTable.setFillsViewportHeight(true);
-        
+
         // Panel#2 hosts button of "Cancel" 
         p2.setLayout(new BorderLayout());
         p2.add(jbtCancel, BorderLayout.SOUTH);
@@ -123,25 +126,23 @@ public class SetupMethodList extends JDialog implements ActionListener {
         p4.setLayout(new BorderLayout());
         p4.add(p1, BorderLayout.CENTER);
         p4.add(p2, BorderLayout.SOUTH);
-        
+
         // Create JFrame, add panel#3 & #4 into a frame
         //JFrame frame = new JFrame();
         this.setLayout(new BorderLayout());
         this.add(p3, BorderLayout.CENTER);
         this.add(p4, BorderLayout.EAST);
 
-
-        
         this.setModal(true);
         this.setTitle(Constants.TITLE_METHOD);
         this.setResizable(false);
         this.pack();
-        
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         if (e.getSource() == jbtAdd) {
             showMethoInputFrame();
             refreshMethodList(Method.getMethodList());
@@ -165,47 +166,47 @@ public class SetupMethodList extends JDialog implements ActionListener {
             if (getTableCheckedCount() < 1) {
                 JOptionPane.showMessageDialog(this, Constants.NO_ITEM_SELECTED);
             } else {
-                 // get selected item
+                // get selected item
                 ArrayList list = new ArrayList();
                 for (int i = 0; i < methodTable.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean) methodTable.getModel().getValueAt(i, 0);
                     if (checked) {
                         Method m = new Method();
                         m.setMethod_id((int) methodTable.getModel().getValueAt(i, 1));
-                        String method_Name = (String)methodTable.getModel().getValueAt(i, 2);
+                        String method_Name = (String) methodTable.getModel().getValueAt(i, 2);
                         int methodID = m.getMethod_id(); //new
                         boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_METHOD_ID, methodID); //new
-                        if (isForeignKeyInuse){ //new "if" statement
-                           JOptionPane.showMessageDialog(this, "Method " + "\"" + method_Name + "\"" + " is already in use, cannot be deleted");
+                        if (isForeignKeyInuse) { //new "if" statement
+                            JOptionPane.showMessageDialog(this, "Method " + "\"" + method_Name + "\"" + " is already in use, cannot be deleted");
+                        } else { //new
+                            list.add(m);
                         }
-                            else { //new
-                                list.add(m);
-                            }
                     }
                 }
                 if (list.size() > 0) //new
+                {
                     deleteMethods(list);
+                }
 
             }
         } else if (e.getSource() == jbtCancel) {
             cancel();
         }
     } //actionPerform  
-    
-        
-     private void addListenerToObject(){
-        
+
+    private void addListenerToObject() {
+
         methodTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    JTable target = (JTable)e.getSource();
+                    JTable target = (JTable) e.getSource();
                     int selectedRowIndex = target.getSelectedRow();
                     //int selectedColumnIndex = target.getSelectedColumn(); //System.out.println("selected: (" + selectedRowIndex + "),(" + selectedColumnIndex + ")");
                     //Object selectedObject = (Object) tbl_recipe.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-                    int method_id = Integer.parseInt(((Object)methodTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
-                    
-                    if(method_id!=-1) {
+                    int method_id = Integer.parseInt(((Object) methodTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
+
+                    if (method_id != -1) {
                         Method method = new Method();
                         method.setMethod_id(method_id);
                         showMethoInputFrame(method);
@@ -213,11 +214,9 @@ public class SetupMethodList extends JDialog implements ActionListener {
                 }
             }
         });
-        
-    }
-    
 
-    
+    }
+
     public void refreshMethodList(ArrayList c_list) { //System.out.println("c_list.size(): " + c_list.size());
 
         if (c_list.size() > 0) {
@@ -262,7 +261,7 @@ public class SetupMethodList extends JDialog implements ActionListener {
 
         }
     }
-    
+
     private int getTableCheckedCount() {
         int count = 0;
         for (int i = 0; i < methodTable.getModel().getRowCount(); i++) {
@@ -273,7 +272,7 @@ public class SetupMethodList extends JDialog implements ActionListener {
         }
         return count;
     }
-    
+
     private void deleteMethods(ArrayList c_list) {
 
         int n = JOptionPane.showConfirmDialog(this, Constants.CONFIRM_DELETE_ITEM, Constants.TITLE_CONFIRM_DELETE, JOptionPane.YES_NO_OPTION);
@@ -287,5 +286,5 @@ public class SetupMethodList extends JDialog implements ActionListener {
         // refresh table
         refreshMethodList(Method.getMethodList());
     }
-    
+
 }

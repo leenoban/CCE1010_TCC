@@ -25,7 +25,7 @@ import utils.DBConfig;
  * @author AngusLipsey
  */
 public class SetupIntervalList extends JDialog implements ActionListener {
-    
+
     JButton jbtAdd = new JButton(Constants.LBL_BTN_ADD);
     JButton jbtModify = new JButton(Constants.LBL_BTN_MODIFY);
     JButton jbtDelete = new JButton(Constants.LBL_BTN_DELETE);
@@ -37,53 +37,57 @@ public class SetupIntervalList extends JDialog implements ActionListener {
     JTable intervalTable;
     TccTableModel model;
     TCC parent;
-    
+
     public SetupIntervalList(TCC m_parent) {
         this.parent = m_parent;
         buildGUI();
         this.addListenerToObject();
     }
-    
+
     // create mode
     private void showIntervalInputFrame() {
         // TODO: Benny :: Roy - call the interval input frame
         SetupIntervalInput intervalInput = new SetupIntervalInput(this);
         intervalInput.setLocationRelativeTo(null);
         intervalInput.setVisible(true);
-        
+
     }
-    
+
     // edit mode
     private void showIntervalInputFrame(Interval m_interval) {
         // TODO: Benny :: Roy - call the interval input frame
         SetupIntervalInput intervalModify = new SetupIntervalInput(m_interval, this);
         intervalModify.setLocationRelativeTo(null);
         intervalModify.setVisible(true);
-        
+
     }
-    
+
     // for cancel button call
     private void cancel() {
         parent.refreshRecipeList(Recipe.getRecipeList());
         setVisible(false);
         dispose();
     }
-    
+
     public static void main(String args[]) {
         SetupIntervalList sml = new SetupIntervalList(new TCC());
-        sml.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        sml.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
         sml.setLocationRelativeTo(null);
         sml.setVisible(true);
     }
-    
+
     private void buildGUI() {
         // TODO: Benny - build GUI
-        
+
         jbtAdd.addActionListener(this);
         jbtModify.addActionListener(this);
         jbtDelete.addActionListener(this);
         jbtCancel.addActionListener(this);
-        
+
         //Create EmptyBorder
         EmptyBorder emptyBorder = new EmptyBorder(10, 10, 10, 10);
 
@@ -94,21 +98,21 @@ public class SetupIntervalList extends JDialog implements ActionListener {
         p1.add(jbtModify);
         p1.add(jbtDelete);
         p1.setBorder(emptyBorder);
-        
+
         // Create JTable
         intervalTable = new JTable();
         intervalTable.setGridColor(Color.LIGHT_GRAY);
 
         refreshIntervalList(Interval.getIntervalList());
-        
+
         intervalTable.setAutoCreateRowSorter(true);
-        
-         // Create ScrollPane
+
+        // Create ScrollPane
         JScrollPane scrollPane = new JScrollPane(intervalTable);
         scrollPane.setPreferredSize(new Dimension(200, 5));
         //scrollPane.setBorder(emptyBorder);
         intervalTable.setFillsViewportHeight(true);
-        
+
         // Panel#2 hosts button of "Cancel" 
         //p2.setSize(200, 50); //Test
         p2.setLayout(new BorderLayout());
@@ -124,15 +128,13 @@ public class SetupIntervalList extends JDialog implements ActionListener {
         p4.setLayout(new BorderLayout());
         p4.add(p1, BorderLayout.CENTER);
         p4.add(p2, BorderLayout.SOUTH);
-        
+
         // Create JFrame, add panel#3 & #4 into a frame
         //JFrame frame = new JFrame();
         this.setLayout(new BorderLayout());
         this.add(p3, BorderLayout.CENTER);
         this.add(p4, BorderLayout.EAST);
 
-
-        
         this.setModal(true);
         this.setTitle(Constants.TITLE_INTERVAL);
         this.setResizable(false);
@@ -141,7 +143,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         if (e.getSource() == jbtAdd) {
             showIntervalInputFrame();
             refreshIntervalList(Interval.getIntervalList());
@@ -165,47 +167,48 @@ public class SetupIntervalList extends JDialog implements ActionListener {
             if (getTableCheckedCount() < 1) {
                 JOptionPane.showMessageDialog(this, Constants.NO_ITEM_SELECTED);
             } else {
-                 // get selected item
+                // get selected item
                 ArrayList list = new ArrayList();
                 for (int i = 0; i < intervalTable.getModel().getRowCount(); i++) {
                     boolean checked = (Boolean) intervalTable.getModel().getValueAt(i, 0);
                     if (checked) {
                         Interval in = new Interval();
                         in.setInterval_id((int) intervalTable.getModel().getValueAt(i, 1));
-                        int time_Interval = (int)intervalTable.getModel().getValueAt(i, 2);
+                        int time_Interval = (int) intervalTable.getModel().getValueAt(i, 2);
                         int intervalID = in.getInterval_id(); //new
                         boolean isForeignKeyInuse = Recipe.isForeignKeyInuse(DBConfig.DB_FIELD_INTERVAL_ID, intervalID); //new
-                        if (isForeignKeyInuse){ //new "if" statement
-                           JOptionPane.showMessageDialog(this, "Time Interval " + "\"" + time_Interval + "\"" + " is already in use, cannot be deleted");
+                        if (isForeignKeyInuse) { //new "if" statement
+                            JOptionPane.showMessageDialog(this, "Time Interval " + "\"" + time_Interval + "\"" + " is already in use, cannot be deleted");
+                        } else { //new
+                            list.add(in);
                         }
-                            else { //new
-                                list.add(in);
-                            }
                     }
                 }
                 if (list.size() > 0) //new
+                {
                     deleteIntervals(list);
+                }
 
             }
         } else if (e.getSource() == jbtCancel) {
             cancel();
         }
-        
+
     }
-    
-     private void addListenerToObject(){
-        
+
+    private void addListenerToObject() {
+
         intervalTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    JTable target = (JTable)e.getSource();
+                    JTable target = (JTable) e.getSource();
                     int selectedRowIndex = target.getSelectedRow();
                     //int selectedColumnIndex = target.getSelectedColumn(); //System.out.println("selected: (" + selectedRowIndex + "),(" + selectedColumnIndex + ")");
                     //Object selectedObject = (Object) tbl_recipe.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-                    int interval_id = Integer.parseInt(((Object)intervalTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
-                    
-                    if(interval_id!=-1) {
+                    int interval_id = Integer.parseInt(((Object) intervalTable.getModel().getValueAt(selectedRowIndex, 1)).toString());
+
+                    if (interval_id != -1) {
                         Interval interval = new Interval();
                         interval.setInterval_id(interval_id);
                         showIntervalInputFrame(interval);
@@ -213,10 +216,9 @@ public class SetupIntervalList extends JDialog implements ActionListener {
                 }
             }
         });
-        
+
     }
-    
-    
+
     public void refreshIntervalList(ArrayList c_list) { //System.out.println("c_list.size(): " + c_list.size());
 
         if (c_list.size() > 0) {
@@ -264,7 +266,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
 
         }
     }
-    
+
     private int getTableCheckedCount() {
         int count = 0;
         for (int i = 0; i < intervalTable.getModel().getRowCount(); i++) {
@@ -275,7 +277,7 @@ public class SetupIntervalList extends JDialog implements ActionListener {
         }
         return count;
     }
-    
+
     private void deleteIntervals(ArrayList c_list) {
 
         int n = JOptionPane.showConfirmDialog(this, Constants.CONFIRM_DELETE_ITEM, Constants.TITLE_CONFIRM_DELETE, JOptionPane.YES_NO_OPTION);
@@ -289,5 +291,5 @@ public class SetupIntervalList extends JDialog implements ActionListener {
         // refresh table
         refreshIntervalList(Interval.getIntervalList());
     }
-    
+
 }

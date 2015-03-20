@@ -34,7 +34,7 @@ public class RecipeInput extends JDialog implements ActionListener {
 
     private TCC parent;
     private String mode;
-    
+
     JPanel panelNew = new JPanel();
     JPanel panelButton = new JPanel();
     JPanel panelLeft = new JPanel();
@@ -70,7 +70,6 @@ public class RecipeInput extends JDialog implements ActionListener {
     JScrollPane scrollStep = new JScrollPane(txtStep, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     int chkRecipeID;
-   
 
     public RecipeInput(TCC m_parent) {
         this.parent = m_parent;
@@ -87,7 +86,7 @@ public class RecipeInput extends JDialog implements ActionListener {
 
     private void buildGUI() {
         // TODO: Joe - buildGUI
-        
+
         //panel to hold tabs and button
         panelButton.setLayout(new GridLayout(1, 2));
         panelButton.add(btnCancel);
@@ -108,7 +107,7 @@ public class RecipeInput extends JDialog implements ActionListener {
         panelRight.add(cboCountry);
         panelRight.add(cboCookingMethod);
         panelRight.add(cboTimeRequire);
-        
+
         //Check the full list item from DB to put on Combo box
         ArrayList list = Country.getCountryList();
         for (int i = 0; i < list.size(); i++) {
@@ -179,7 +178,6 @@ public class RecipeInput extends JDialog implements ActionListener {
         add(tbd1, BorderLayout.NORTH);
         add(panelButton, BorderLayout.SOUTH);
 
-           
         this.setModal(true);
         this.setTitle(Constants.TITLE_RECIPE + " - " + this.mode);
         this.setSize(800, 600);
@@ -190,24 +188,24 @@ public class RecipeInput extends JDialog implements ActionListener {
     // fill data to the recipe form from Recipe object (for update purpose)
     private void fillData(Recipe m_recipe) {
         // TODO: Joe - fill data
-        
+
         //check index ID of the item for selected item
         chkRecipeID = m_recipe.getRecipe_id();
         Recipe r = Recipe.getRecipe(chkRecipeID);
-        
+
         //put the selected item name and input on the text field
         txtRecipeName.setText(r.getRecipe_name());
-        
+
         //set selected item information from index ID (Country / cooking method / Interval)
-        int chkCountryID = r.getCountry().getCountry_id() -1;
+        int chkCountryID = r.getCountry().getCountry_id() - 1;
         cboCountry.setSelectedIndex(chkCountryID);
-        
+
         int chkCookingMethodID = r.getMethod().getMethod_id() - 1;
         cboCookingMethod.setSelectedIndex(chkCookingMethodID);
-        
+
         int chkIntervalUnitID = r.getInterval().getInterval_id() - 1;
         cboTimeRequire.setSelectedIndex(chkIntervalUnitID);
-        
+
         //set selected item Level from index ID
         int chkLevel = r.getLevel();
         switch (chkLevel) {
@@ -229,7 +227,7 @@ public class RecipeInput extends JDialog implements ActionListener {
             default:
                 break;
         }
-        
+
         //put the selected item Material / Step on the text field
         txtMaterial.setText(r.getMaterial());
         txtStep.setText(r.getSteps());
@@ -256,44 +254,48 @@ public class RecipeInput extends JDialog implements ActionListener {
     public static void main(String args[]) {
         RecipeInput ri = new RecipeInput(null);
         ri.setLocationRelativeTo(null);
-        ri.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        ri.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
         ri.setVisible(true);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         //when Cancel button click to to cancel() method
         Object obj = e.getSource();
         if (obj == btnCancel) {
 
             cancel();
-            
-        // when Save button click Add or Modify the DB record
+
+            // when Save button click Add or Modify the DB record
         } else if (obj == btnSave) {
-            
+
             Recipe r = new Recipe();
 
             Country c = new Country();
             Method m = new Method();
             Interval i = new Interval();
-            
+
             String txtR = txtRecipeName.getText();
             String txtM = txtMaterial.getText();
             String txtS = txtStep.getText();
 
             r.setRecipe_id(chkRecipeID);
-            
+
             // checking if Recipe name is empty
             if (txtR.equals("")) {
                 JOptionPane.showMessageDialog(null, "Please enter a Recipe Name", "Error", JOptionPane.ERROR_MESSAGE);
                 txtRecipeName.requestFocusInWindow();
             } else {
-                
+
                 //save changes from different field
                 r.setRecipe_name(txtR);
-                
+
                 int setCountryID = cboCountry.getSelectedIndex();
                 setCountryID = setCountryID + 1;
                 c.setCountry_id(setCountryID);
@@ -323,7 +325,7 @@ public class RecipeInput extends JDialog implements ActionListener {
 
                 r.setMaterial(txtM);
                 r.setSteps(txtS);
-                
+
                 //pass the saved record to updateRecipe method
                 updateRecipe(r);
             }
