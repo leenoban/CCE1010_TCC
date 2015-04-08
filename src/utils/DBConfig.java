@@ -134,8 +134,8 @@ public class DBConfig {
                                                   + DB_FIELD_RECIPE_MATERIAL + ", " 
                                                   + DB_FIELD_RECIPE_STEPS + ")" +
             "VALUES " +
-            "(1, 'Kung Pao chicken', 1, 1, 1, 1, '(BlahBlahBlah)', '(BlahBlahBlah)'), " +
-            "(2, 'BBQ beef short ribs', 2, 2, 2, 2, '(BlahBlahBlah)', '(BlahBlahBlah)'), " +
-            "(3, 'Oysters with chilli, ginger & rice wine vinegar', 3, 3, 3, 3, '(BlahBlahBlah)', '(BlahBlahBlah)'); "
+            "(1, 'Kung Pao chicken', 1, 1, 1, 1, '1 teaspoon soy sauce \n1 teaspoon hoisin sauce \n1 teaspoon sesame oil \n... ', '1. Marinate the chicken: In a medium bowl, stir together the soy sauce, rice wine, and cornstarch until the cornstarch is dissolved ...'), " +
+            "(2, 'BBQ beef short ribs', 2, 2, 2, 2, '2 x 1.5 kg  beef short ribs \nsea salt \nfreshly ground black pepper \n...', 'Place the ribs in a snug-fitting roasting tray, season with salt and pepper, drizzle with olive oil, then rub all over. Cover tightly with a double layer of tin foil, then cook for 7 to 8 hours, or until cooked through and tender.....'), " +
+            "(3, 'Oysters with chilli, ginger & rice wine vinegar', 3, 3, 3, 3, '½ thumb-sized piece peeled ginger \n6 tablespoons rice wine vinegar \n1  red chilli \n...', 'Oysters are funny old things. Now they''re considered a decadent aphrodisiac, when only 100 years ago they were the pigeons of the sea and would be chucked into pies as peasant food. Aphrodisiac? I''m not sure, but I do seem to have acquired a taste for them over the last 3 years......'); "
             ;
 }
